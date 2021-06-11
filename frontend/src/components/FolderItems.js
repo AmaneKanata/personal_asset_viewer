@@ -65,8 +65,9 @@ function ItemThumbnail(props) {
             <Link
                 // to={`/item/${props.data.id}/${props.data.type}/${props.data.index}`}
                 to={{
-                    pathname: `/item/${id}/${type}/${props.data.index}`,
+                    pathname: `/${id}/item/${type}`,
                     state: {
+                        currentIndex: props.data.index,
                         maxIndex: maxIndex
                     },
                 }}
