@@ -47,12 +47,36 @@ db.on('error', console.error.bind(console, 'MongoDB connection error'));
 // });
 
 router.get('/list', function (req, res, next) {
+  // const cursor = Folder.find(req.query, 'name').cursor();
+
+  // res.write("1")
+  // setTimeout(() => {
+  //   res.write("1")
+  // }, 1000)
+  // setTimeout(() => {
+  //   res.write("2")
+  // }, 2000)
+  // setTimeout(() => {
+  //   res.write("3")
+  // }, 3000)
+  // setTimeout(() => {
+  //   res.write("4")
+  //   res.end();
+  // }, 4000)
+
+  const begin = req.query.begin
+  const size = req.query.size
+
+  delete req.query.begin
+  delete req.query.size
+
   Folder.find(req.query, 'name', (err, result) => {
     if (err) {
       res.send(err)
     } else {
       console.log(result)
-      res.send(result)
+      // console.log(result.splice(begin, size))
+      res.send(result.splice(begin, size))
     }
   })
 })

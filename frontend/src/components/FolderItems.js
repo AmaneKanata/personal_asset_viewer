@@ -1,11 +1,16 @@
 import { Link } from "react-router-dom";
-import Item from './Item.js'
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useState } from "react";
 
 var id;
 var type;
 var maxIndex;
 
 function FolderItems(props) {
+
+    // const [items, setItem] = useState([])
+    // const infiniteScrollSetting = {
+    // }
 
     id = props.data.id;
     type = props.data.type;
@@ -15,18 +20,30 @@ function FolderItems(props) {
         <div>
             <h1>Folder items</h1>
             <h1>type : {props.data.type}</h1>
-            {
-                [...Array(props.data.length)].map((e, index) => {
-                    return (
-                        <ItemThumbnail data={{
-                            index: index,
-                            // id: props.data.id,
-                            // type: props.data.type,
-                            // maxIndex : props.data.length
-                        }} />
-                    )
-                })
-            }
+            {[...Array(props.data.length)].map((e, index) => {
+                return (
+                    <ItemThumbnail data={{
+                        index: index,
+                        // id: props.data.id,
+                        // type: props.data.type,
+                        // maxIndex : props.data.length
+                    }} />
+                )
+            })}
+            {/* <InfiniteScroll {...infiniteScrollSetting}>
+                {
+                    items.map((e, index) => {
+                        return (
+                            <ItemThumbnail data={{
+                                index: index,
+                                // id: props.data.id,
+                                // type: props.data.type,
+                                // maxIndex : props.data.length
+                            }} />
+                        )
+                    })
+                }
+            </InfiniteScroll> */}
         </div>
     )
 }
@@ -70,15 +87,13 @@ function ItemThumbnail(props) {
                         currentIndex: props.data.index,
                         maxIndex: maxIndex
                     },
-                }}
-            >
+                }}>
                 <img
                     src={"http://localhost:3000/item?"
                         + "id=" + id + "&"
                         + "type=" + type + "&"
                         + "index=" + props.data.index
-                    }
-                />
+                    } />
                 <p>{props.data.index + 1}</p>
             </Link>
         </div>

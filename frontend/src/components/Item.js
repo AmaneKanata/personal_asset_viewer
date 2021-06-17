@@ -10,7 +10,8 @@ function Item(props) {
     const slider = useRef();
 
     const setting = {
-        lazyLoad: true
+        lazyLoad: true,
+        infinite: false
     }
 
     useEffect(() => {
