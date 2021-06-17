@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import FolderList from "./FolderList";
 import FolderOverview from "./FolderOverview";
 import FolderItems from "./FolderItems";
+import SlickTest from "./SlickTest";
 
 function FolderDetail({ match }) {
 
@@ -37,6 +38,7 @@ function FolderDetail({ match }) {
                     )
                 })
             }
+            {/* <SlickTest></SlickTest> */}
         </div>
     )
 }

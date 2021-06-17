@@ -9,7 +9,7 @@ function FolderItems(props) {
 
     id = props.data.id;
     type = props.data.type;
-    maxIndex = props.data.length -1;
+    maxIndex = props.data.length;
 
     return (
         <div>
