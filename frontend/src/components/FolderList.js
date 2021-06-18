@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Configuration from "../Configuration";
+import '../css/gallery.scss'
 
 function FolderList(props) {
 
@@ -30,22 +31,23 @@ function FolderList(props) {
 
 
     return (
-        <div>
-            <ul>
+        <div className="lookbook-gallery" >
+            <div className="lookbook-grid" role="region">
                 {
                     props.folderList.map((value) => {
                         return (
-                            <li key={value._id}>
-                                <Link to={"/" + value._id}>
-                                    <img src={`http://localhost:3000/cover/${value._id}`}></img>
-                                    <br/>
-                                    {value.name}
-                                </Link>
-                            </li>
+                            <Link to={"/" + value._id}>
+                                <figure className="model">
+                                    <img src={`http://localhost:3000/cover/${value._id}`} />
+                                    <figcaption className="model--caption">
+                                        <p>{value.name}</p>
+                                    </figcaption>
+                                </figure>
+                            </Link>
                         )
                     })
                 }
-            </ul>
+            </div>
         </div>
     )
 }
