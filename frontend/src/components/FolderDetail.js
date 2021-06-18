@@ -5,34 +5,40 @@ import FolderList from "./FolderList";
 import FolderOverview from "./FolderOverview";
 import FolderItems from "./FolderItems";
 
-function FolderDetail({ match }) {
+function FolderDetail({ match, location, history }) {
 
     const [folderDetail, setFolderDetail] = useState({
-        items : []
+        items: []
     });
 
     useEffect(() => {
         axios.get("http://localhost:3000/detail/" + match.params.folderId)
-        .then((res) => {
-            setFolderDetail(res.data[0])
-        })
+            .then((res) => {
+                setFolderDetail(res.data[0])
+            })
     }, [])
+
+    const back = function () {
+        console.log("test")
+        history.push('/')
+    }
 
     return (
         <div>
-            <FolderOverview data = {{
-                authors : folderDetail.authors,
-                parodies : folderDetail.parodies,
-                tags : folderDetail.tags
+            <button onClick={back}>back</button>
+            <FolderOverview data={{
+                authors: folderDetail.authors,
+                parodies: folderDetail.parodies,
+                tags: folderDetail.tags
             }}></FolderOverview>
             {
                 folderDetail.items.map((items) => {
                     console.log(folderDetail)
                     return (
-                        <FolderItems data = {{
-                            id : folderDetail._id,
-                            type : items.type,
-                            length : items.paths.length
+                        <FolderItems data={{
+                            id: folderDetail._id,
+                            type: items.type,
+                            length: items.paths.length
                         }}></FolderItems>
                     )
                 })

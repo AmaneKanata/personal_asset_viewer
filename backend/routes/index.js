@@ -47,23 +47,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error'));
 // });
 
 router.get('/list', function (req, res, next) {
-  // const cursor = Folder.find(req.query, 'name').cursor();
-
-  // res.write("1")
-  // setTimeout(() => {
-  //   res.write("1")
-  // }, 1000)
-  // setTimeout(() => {
-  //   res.write("2")
-  // }, 2000)
-  // setTimeout(() => {
-  //   res.write("3")
-  // }, 3000)
-  // setTimeout(() => {
-  //   res.write("4")
-  //   res.end();
-  // }, 4000)
-
   const begin = req.query.begin
   const size = req.query.size
 
@@ -74,15 +57,29 @@ router.get('/list', function (req, res, next) {
     if (err) {
       res.send(err)
     } else {
-      console.log(result)
-      // console.log(result.splice(begin, size))
       res.send(result.splice(begin, size))
     }
   })
 })
 
+router.get('/cover/:id', function (req, res, next) {
+  Folder.find({ _id: req.params.id }, 'items', (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      const id = req.params.id
+      const type = result[0].items[0].type
+
+      getItemPath(id, type, 0)
+        .then((path) => {
+          res.sendFile(path)
+        })
+    }
+  })
+})
+
 router.get('/detail/:id', function (req, res, next) {
-  Folder.find({ _id : req.params.id }, (err, result) => {
+  Folder.find({ _id: req.params.id }, (err, result) => {
     if (err) {
       res.send(err)
     } else {
@@ -96,23 +93,34 @@ router.get('/item', function (req, res, next) {
   const type = req.query.type;
   const index = req.query.index;
 
-  Folder.find({ _id: id }, (err, result) => {
-    if (err) {
-      res.status(404).send("No matching Id")
-    } else {
-      const folder = result[0]
-      let items
-      folder.items.every(element => {
-        if (element["type"] === type) {
-          items = element
-          return false;
-        }
-      });
-      const path = folder.path + "\\" +
-        items.paths[index] + "." + type;
+  getItemPath(id, type, index)
+    .then((path) => {
       res.sendFile(path)
-    }
-  })
+    })
 })
+
+function getItemPath(id, type, index) {
+
+  return new Promise((resolve, reject) => {
+    Folder.find({ _id: id }, (err, result) => {
+      if (err) {
+        // res.status(404).send("No matching Id")
+        reject(err)
+      } else {
+        const folder = result[0]
+        let items
+        folder.items.every(element => {
+          if (element["type"] === type) {
+            items = element
+            return false;
+          }
+        });
+        const path = folder.path + "\\" +
+          items.paths[index] + "." + type;
+        resolve(path)
+      }
+    })
+  })
+}
 
 module.exports = router;

@@ -3,43 +3,49 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Configuration from "../Configuration";
 
-function FolderList() {
+function FolderList(props) {
 
-    const [folderList, setFolderList] = useState([])
-    const [current, setCurrent] = useState(0)
 
-    useEffect(() => {
+    // const [folderList, setFolderList] = useState([])
+    // const [current, setCurrent] = useState(0)
 
-        axios.get("http://localhost:3000/list", {
-            params: {
-                begin: current * Configuration.size,
-                // end: ((current + 1) * Configuration.size)
-                size: Configuration.size
-            }
-        }).then((res) => {
-            if (res.data.length > 0) {
-                // console.log(res.data)
-                setFolderList(folderList.concat(res.data))
-                setCurrent(current + 1)
-            }
-        })
-    }, [current])
+    // useEffect(() => {
+
+    //     axios.get("http://localhost:3000/list", {
+    //         params: {
+    //             begin: current * Configuration.size,
+    //             // end: ((current + 1) * Configuration.size)
+    //             size: Configuration.size
+    //         }
+    //     }).then((res) => {
+    //         if (res.data.length > 0) {
+    //             // console.log(res.data)
+    //             setFolderList(folderList.concat(res.data))
+    //             setTimeout(() => {
+    //                 setCurrent(current + 1)
+    //             }, 1000);
+    //         }
+    //     })
+    // }, [current])
+
 
     return (
         <div>
-            <ol>
+            <ul>
                 {
-                    folderList.map((value) => {
+                    props.folderList.map((value) => {
                         return (
                             <li key={value._id}>
                                 <Link to={"/" + value._id}>
+                                    <img src={`http://localhost:3000/cover/${value._id}`}></img>
+                                    <br/>
                                     {value.name}
                                 </Link>
                             </li>
                         )
                     })
                 }
-            </ol>
+            </ul>
         </div>
     )
 }
