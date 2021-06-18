@@ -4,10 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import ScrollMemory from 'react-router-scroll-memory';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
+      <ScrollMemory />
       <App></App>
     </BrowserRouter>
   </React.StrictMode>,
