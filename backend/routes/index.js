@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var configuration = require('../configuration.js')
 var fs = require('fs')
+var btoa = require('btoa')
 
 var folderSchema = require('../schemas/folderSchema.js');
 const { send } = require('process');
@@ -46,21 +47,54 @@ db.on('error', console.error.bind(console, 'MongoDB connection error'));
 //   res.send()
 // });
 
-router.get('/list', function (req, res, next) {
+router.get('/test', function(req, res, next) {
+  fs.readFile("C:\\Users\\user\\Desktop\\test_images\\test_1\\1.jpg", (err, data) => {
+    console.log(data)
+    console.log(typeof data)
+    res.send({
+      name : "test",
+      data : data
+    })
+  })
+})
+
+router.get('/list', async function (req, res, next) {
   const begin = req.query.begin
   const size = req.query.size
 
   delete req.query.begin
   delete req.query.size
 
-  Folder.find(req.query, 'name', (err, result) => {
-    if (err) {
-      res.send(err)
-    } else {
-      res.send(result.splice(begin, size))
-    }
+  let result = await Folder.find(req.query, 'name').lean()
+  result = result.splice(begin, size)
+
+  await Promise.all(
+    result.map((element, index) => {
+      return new Promise((resolve, rejext) => {
+        fs.readdir(configuration.THUMBNAIL_URL_PREFIX + element.name, (err, fileList) => {
+          fs.readFile(configuration.THUMBNAIL_URL_PREFIX + element.name + "\\" + fileList[0], (err, data) => {
+            const encoded = customBtoa(data)
+            const type = "jpg"
+            const imgSrcString = `data:image/${type};base64,${encoded}`;
+            element.thumbnail = imgSrcString
+            resolve()
+          })
+        })
+      })
+    })
+  ).then(() => {
+    res.send(result)
   })
 })
+
+function customBtoa(buffer) {
+  const uint8Array = new Uint8Array(buffer)
+  const data = uint8Array.reduce((acc, value, index) => {
+    acc += String.fromCharCode(value)
+    return acc
+  }, '')
+  return btoa(data)
+}
 
 router.get('/cover/:id', function (req, res, next) {
   Folder.find({ _id: req.params.id }, 'items', (err, result) => {

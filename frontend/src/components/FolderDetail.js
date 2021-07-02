@@ -1,7 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import FolderList from "./FolderList";
 import FolderOverview from "./FolderOverview";
 import FolderItems from "./FolderItems";
 

@@ -22,7 +22,6 @@ function App() {
           }
       }).then((res) => {
           if (res.data.length > 0) {
-              // console.log(res.data)
               setFolderList(folderList.concat(res.data))
               setCurrent(current + 1)
           }
@@ -31,7 +30,8 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Route path="/" component={FolderList} exact></Route> */}
+      {/* <Test></Test> */}
+
       <Route path="/" exact>
         <FolderList folderList={folderList}></FolderList>
       </Route>

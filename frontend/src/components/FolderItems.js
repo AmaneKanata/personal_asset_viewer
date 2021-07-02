@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useState } from "react";
 
 var id;
 var type;
