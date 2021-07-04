@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "../css/item.scss"
 
 function Item(props) {
 
@@ -9,7 +10,8 @@ function Item(props) {
 
     const setting = {
         lazyLoad: true,
-        infinite: false
+        infinite: false,
+        arrows: false
     }
 
     useEffect(() => {
@@ -28,6 +30,7 @@ function Item(props) {
                             + "index=" + index
                         }
                         loading="lazy"
+                        className ="page"
                     >
                     </img>
                 </div>
@@ -40,6 +43,7 @@ function Item(props) {
             <Slider
                 {...setting}
                 ref={slider}
+                // className = "slider"
             >{getSliderComponent()}</Slider>
         </div>
     )

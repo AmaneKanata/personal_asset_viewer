@@ -13,19 +13,19 @@ function App() {
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
-
-      axios.get("http://localhost:3000/list", {
-          params: {
-              begin: current * Configuration.size,
-              // end: ((current + 1) * Configuration.size)
-              size: Configuration.size
-          }
-      }).then((res) => {
-          if (res.data.length > 0) {
-              setFolderList(folderList.concat(res.data))
-              setCurrent(current + 1)
-          }
-      })
+    console.log("useEffect called")
+    axios.get("http://localhost:3000/list", {
+      params: {
+        begin: current * Configuration.size,
+        // end: ((current + 1) * Configuration.size)
+        size: Configuration.size
+      }
+    }).then((res) => {
+      if (res.data.length > 0) {
+        setFolderList(folderList.concat(res.data))
+        setCurrent(current + 1)
+      }
+    })
   }, [current])
 
   return (

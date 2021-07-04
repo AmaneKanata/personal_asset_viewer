@@ -23,12 +23,12 @@ function FolderDetail({ match, location, history }) {
 
     return (
         <div>
-            <button onClick={back}>back</button>
+            {/* <button onClick={back}>back</button>
             <FolderOverview data={{
                 authors: folderDetail.authors,
                 parodies: folderDetail.parodies,
                 tags: folderDetail.tags
-            }}></FolderOverview>
+            }}></FolderOverview> */}
             {
                 folderDetail.items.map((items) => {
                     console.log(folderDetail)
