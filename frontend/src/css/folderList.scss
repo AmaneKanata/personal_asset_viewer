@@ -4,21 +4,24 @@
   grid-gap: .3em;
   grid-template-columns: 1fr 1fr;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit:cover;
-    display: block;
-    margin-left: auto;
-    margin-right: auto
-  }
-
   .item {
     margin: 0;
     position: relative;
-    aspect-ratio: 1;
+    // aspect-ratio: 1;
+    width: 100%;
+    padding-bottom: 100%;
     overflow: hidden;
     
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit:cover;
+      display: block;
+      margin-left: auto;
+      margin-right: auto
+    }
+
     .item-name {
       position: absolute;
       bottom: 0;
