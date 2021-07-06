@@ -43,7 +43,7 @@ function Item(props) {
             <Slider
                 {...setting}
                 ref={slider}
-                // className = "slider"
+                className = "slider"
             >{getSliderComponent()}</Slider>
         </div>
     )

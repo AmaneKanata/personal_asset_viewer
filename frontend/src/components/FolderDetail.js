@@ -38,7 +38,7 @@ function FolderDetail({ match, location, history }) {
                             type: items.type,
                             length: items.paths.length
                         }}
-                        key={}
+                        key={items.type}
                         ></FolderItems>
                     )
                 })

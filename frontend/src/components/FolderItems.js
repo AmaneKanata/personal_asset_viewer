@@ -15,12 +15,14 @@ function FolderItems(props) {
         <div className="container-thumbnail">
             {[...Array(props.data.length)].map((e, index) => {
                 return (
-                    <ItemThumbnail data={{
+                    <ItemThumbnail
+                    data={{
                         index: index,
                         // id: props.data.id,
                         // type: props.data.type,
                         // maxIndex : props.data.length
-                    }} />
+                    }} 
+                    key={index}/>
                 )
             })}
         </div>
