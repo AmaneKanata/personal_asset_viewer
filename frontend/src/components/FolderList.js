@@ -11,8 +11,7 @@ function FolderList(props) {
                         <figure className="item">
                             <img src={value.thumbnail} />
                             <figcaption className="item-name">
-                                {/* <p>{value.name}</p> */}
-                                <p>dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</p>
+                                <p>{value.name}</p>
                             </figcaption>
                         </figure>
                     </Link>

@@ -13,11 +13,9 @@ function App() {
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
-    console.log("useEffect called")
     axios.get("http://localhost:3000/list", {
       params: {
         begin: current * Configuration.size,
-        // end: ((current + 1) * Configuration.size)
         size: Configuration.size
       }
     }).then((res) => {
@@ -30,13 +28,11 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Test></Test> */}
-
       <Route path="/" exact>
         <FolderList folderList={folderList}></FolderList>
       </Route>
-      <Route path="/:folderId" component={FolderDetail} exact></Route>
-      <Route path="/:id/item/:type/" component={Item} exact></Route>
+      <Route path="/:id" component={FolderDetail} exact></Route>
+      <Route path="/:id/item" component={Item} exact></Route>
     </div>
   );
 }

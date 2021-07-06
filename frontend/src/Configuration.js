@@ -1,5 +1,5 @@
 const Configuration = {
-    size: 1
+    size: 10
 }
 
 export default Configuration;

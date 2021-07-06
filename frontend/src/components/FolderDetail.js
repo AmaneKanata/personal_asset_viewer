@@ -10,40 +10,15 @@ function FolderDetail({ match, location, history }) {
     });
 
     useEffect(() => {
-        axios.get("http://localhost:3000/detail/" + match.params.folderId)
+        axios.get(`http://localhost:3000/${match.params.id}/detail`)
             .then((res) => {
                 setFolderDetail(res.data[0])
             })
     }, [])
 
-    const back = function () {
-        console.log("test")
-        history.push('/')
-    }
-
     return (
         <div>
-            {/* <button onClick={back}>back</button>
-            <FolderOverview data={{
-                authors: folderDetail.authors,
-                parodies: folderDetail.parodies,
-                tags: folderDetail.tags
-            }}></FolderOverview> */}
-            {
-                folderDetail.items.map((items) => {
-                    console.log(folderDetail)
-                    return (
-                        <FolderItems data={{
-                            id: folderDetail._id,
-                            type: items.type,
-                            length: items.paths.length
-                        }}
-                        key={items.type}
-                        ></FolderItems>
-                    )
-                })
-            }
-            {/* <SlickTest></SlickTest> */}
+            <FolderItems data={{id: folderDetail._id}}></FolderItems>
         </div>
     )
 }

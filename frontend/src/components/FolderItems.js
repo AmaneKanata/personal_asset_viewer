@@ -1,55 +1,47 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import '../css/thumbnailList.scss'
-
-var id;
-var type;
-var maxIndex;
+import { Route } from 'react-router';
+import Item from './Item.js'
 
 function FolderItems(props) {
 
-    id = props.data.id;
-    type = props.data.type;
-    maxIndex = props.data.length;
+    const [thumbnails, setThumbnails] = useState([])
+    const [maxIndex, setMaxIndex] = useState(0)
+
+    useEffect(() => {
+        if(props.data.id === undefined) {
+            return
+        }
+        console.log(props.data.id)
+
+        axios.get(`http://localhost:3000/${props.data.id}/thumbnail`)
+            .then((result) => {
+                console.log(result)
+                setThumbnails(result.data)
+                setMaxIndex(result.data.length)
+            })
+    }, [props.data.id])
 
     return (
         <div className="container-thumbnail">
-            {[...Array(props.data.length)].map((e, index) => {
+            {[...Array(thumbnails.length)].map((e, index) => {
                 return (
-                    <ItemThumbnail
-                    data={{
-                        index: index,
-                        // id: props.data.id,
-                        // type: props.data.type,
-                        // maxIndex : props.data.length
-                    }} 
-                    key={index}/>
+                    <div className="item-thumbnail" key={index}>
+                        <Link
+                            to={{
+                                pathname: `/${props.data.id}/item`,
+                                state: {
+                                    currentIndex: index,
+                                    maxIndex: maxIndex
+                                },
+                            }}>
+                            <img src={thumbnails[index]}></img>
+                        </Link>
+                    </div>
                 )
             })}
-        </div>
-    )
-}
-
-function ItemThumbnail(props) {
-
-    return (
-        <div className="item-thumbnail">
-            <Link
-                // to={`/item/${props.data.id}/${props.data.type}/${props.data.index}`}
-                to={{
-                    pathname: `/${id}/item/${type}`,
-                    state: {
-                        currentIndex: props.data.index,
-                        maxIndex: maxIndex
-                    },
-                }}>
-                <img
-                    src={"http://localhost:3000/item?"
-                        + "id=" + id + "&"
-                        + "type=" + type + "&"
-                        + "index=" + props.data.index
-                    } />
-                <p>{props.data.index + 1}</p>
-            </Link>
         </div>
     )
 }
