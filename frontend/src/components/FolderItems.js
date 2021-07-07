@@ -2,8 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import '../css/thumbnailList.scss'
-import { Route } from 'react-router';
-import Item from './Item.js'
 
 function FolderItems(props) {
 
@@ -14,11 +12,9 @@ function FolderItems(props) {
         if(props.data.id === undefined) {
             return
         }
-        console.log(props.data.id)
 
         axios.get(`http://localhost:3000/${props.data.id}/thumbnail`)
             .then((result) => {
-                console.log(result)
                 setThumbnails(result.data)
                 setMaxIndex(result.data.length)
             })
@@ -26,7 +22,7 @@ function FolderItems(props) {
 
     return (
         <div className="container-thumbnail">
-            {[...Array(thumbnails.length)].map((e, index) => {
+            {thumbnails.map((thumbnail, index) => {
                 return (
                     <div className="item-thumbnail" key={index}>
                         <Link
@@ -37,7 +33,7 @@ function FolderItems(props) {
                                     maxIndex: maxIndex
                                 },
                             }}>
-                            <img src={thumbnails[index]}></img>
+                            <img src={thumbnail}></img>
                         </Link>
                     </div>
                 )

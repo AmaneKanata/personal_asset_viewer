@@ -27,9 +27,12 @@ router.get('/list', async function (req, res, next) {
     result.map((element, index) => {
       return new Promise((resolve, rejext) => {
         fs.readdir(configuration.THUMBNAIL_URL_PREFIX + element.name, (err, fileList) => {
+          console.log("read dir finish : " + element._id)
           fs.readFile(configuration.THUMBNAIL_URL_PREFIX + element.name + "\\" + fileList[0], (err, file) => {
+            console.log("read file finish : " + element._id)
             const encoded = customBtoa(file)
-            const type = "jpg"
+            // const type = "jpg"
+            const type = getFileExtention(fileList[0])
             const imgSrcString = `data:image/${type};base64,${encoded}`;
             element.thumbnail = imgSrcString
             resolve()
@@ -61,7 +64,8 @@ router.get('/:id/thumbnail', function (req, res, next) {
           return new Promise((resolve, reject) => {
             fs.readFile(configuration.THUMBNAIL_URL_PREFIX + result[0].name + "\\" + fileName, (err, file) => {
               const encoded = customBtoa(file)
-              const type = "jpg"
+              // const type = "jpg"
+              const type = getFileExtention(fileName)
               const imgSrcString = `data:image/${type};base64,${encoded}`;
               resolve(imgSrcString)
             })
@@ -78,10 +82,9 @@ router.get('/:id/item', function (req, res, next) {
   const id = req.params.id;
   const index = req.query.index;
 
-  Folder.find({_id: id}, "name", (err, queryResult) => {
+  Folder.find({ _id: id }, "name", (err, queryResult) => {
     fs.readdir(configuration.URL_PREFIX + queryResult[0].name, (err, fileList) => {
-      console.log(configuration.URL_PREFIX + queryResult[0].name + "\\" + fileList[index])
-        res.sendFile(configuration.URL_PREFIX + queryResult[0].name + "\\" + fileList[index])
+      res.sendFile(configuration.URL_PREFIX + queryResult[0].name + "\\" + fileList[index])
     })
   })
 })
@@ -93,6 +96,10 @@ function customBtoa(buffer) {
     return acc
   }, '')
   return btoa(data)
+}
+
+function getFileExtention(fileName) {
+  return fileName.substring(fileName.lastIndexOf('.')+1, fileName.length) || fileName;
 }
 
 module.exports = router;
