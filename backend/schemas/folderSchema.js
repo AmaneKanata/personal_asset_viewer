@@ -9,7 +9,8 @@ const folderSchema = new Schema({
     parodies : [String],
     tags : [String],
     favorite : Boolean,
-    items: [String]
+    items: [String],
+    thumbnail: String
 })
 
 module.exports = folderSchema

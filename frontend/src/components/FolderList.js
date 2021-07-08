@@ -9,7 +9,7 @@ function FolderList(props) {
                 return (
                     <Link to={"/" + value._id} key={value._id}>
                         <figure className="item">
-                            <img src={value.thumbnail} />
+                            <img src={value.thumbnail} loading="lazy"/>
                             <figcaption className="item-name">
                                 <p>{value.name}</p>
                             </figcaption>

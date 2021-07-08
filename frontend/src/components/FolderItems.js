@@ -5,24 +5,22 @@ import '../css/thumbnailList.scss'
 
 function FolderItems(props) {
 
-    const [thumbnails, setThumbnails] = useState([])
-    const [maxIndex, setMaxIndex] = useState(0)
+    // const [folderDetail, setFolderDetail] = useState({})
+    const [items, setItems] = useState([])
 
     useEffect(() => {
-        if(props.data.id === undefined) {
+        if (props.data.id === undefined) {
             return
         }
-
-        axios.get(`http://localhost:3000/${props.data.id}/thumbnail`)
+        axios.get(`http://localhost:3000/${props.data.id}/Detail`)
             .then((result) => {
-                setThumbnails(result.data)
-                setMaxIndex(result.data.length)
+                setItems(result.data[0].items)
             })
     }, [props.data.id])
 
     return (
         <div className="container-thumbnail">
-            {thumbnails.map((thumbnail, index) => {
+            {items.map((item, index) => {
                 return (
                     <div className="item-thumbnail" key={index}>
                         <Link
@@ -30,10 +28,10 @@ function FolderItems(props) {
                                 pathname: `/${props.data.id}/item`,
                                 state: {
                                     currentIndex: index,
-                                    maxIndex: maxIndex
+                                    maxIndex: items.length
                                 },
                             }}>
-                            <img src={thumbnail}></img>
+                            <img src={`http://localhost:3000/${props.data.id}/thumbnail?index=${index}`}></img>
                         </Link>
                     </div>
                 )
