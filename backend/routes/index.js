@@ -6,7 +6,7 @@ var fs = require('fs')
 var btoa = require('btoa')
 
 var folderSchema = require('../schemas/folderSchema.js');
-var Folder = mongoose.model('Folder', folderSchema)
+var Folder = mongoose.model('Manga', folderSchema)
 
 var db = mongoose.connection;
 
@@ -76,8 +76,8 @@ router.get('/:id/item', function (req, res, next) {
   const id = req.params.id;
   const index = req.query.index;
 
-  Folder.find({ _id: id }, "name items", (err, queryResult) => {
-    res.sendFile(configuration.URL_PREFIX + queryResult[0].name + "\\" + queryResult[0].items[index])
+  Folder.find({ _id: id }, "name path items", (err, queryResult) => {
+    res.sendFile(queryResult[0].path + "\\" + queryResult[0].items[index])
   })
 })
 

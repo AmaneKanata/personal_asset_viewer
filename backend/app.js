@@ -8,7 +8,7 @@ var cors = require('cors')
 var indexRouter = require('./routes/index');
 
 var mongoose = require('mongoose')
-var mongoDB = 'mongodb://localhost:27017/personal_asset_viewer'
+var mongoDB = 'mongodb://localhost:27017/data'
 mongoose.connect(mongoDB, {
   useNewUrlParser :  true,
   useUnifiedTopology : true
