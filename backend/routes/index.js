@@ -6,7 +6,6 @@ var fs = require('fs')
 var btoa = require('btoa')
 
 var folderSchema = require('../schemas/folderSchema.js');
-const { time } = require('console');
 var Folder = mongoose.model('Folder', folderSchema)
 
 var db = mongoose.connection;
@@ -20,30 +19,24 @@ router.get('/list', async function (req, res, next) {
   delete req.query.begin
   delete req.query.size
 
-  let result = await Folder.find(req.query, 'name').lean()
-  result = result.splice(begin, size)
+  let queryResult = await Folder.find(req.query, "name items").lean()
+  queryResult = queryResult.splice(begin, size)
 
   Promise.all(
-    result.map((element, index) => {
+    queryResult.map((folderData, index) => {
       return new Promise((resolve, rejext) => {
-        fs.readdir(configuration.THUMBNAIL_URL_PREFIX + element.name, (err, fileList) => {
-          console.log("read dir finish : " + element._id)
-          fs.readFile(configuration.THUMBNAIL_URL_PREFIX + element.name + "\\" + fileList[0], (err, file) => {
-            console.log("read file finish : " + element._id)
-            const encoded = customBtoa(file)
-            // const type = "jpg"
-            const type = getFileExtention(fileList[0])
-            const imgSrcString = `data:image/${type};base64,${encoded}`;
-            element.thumbnail = imgSrcString
-            resolve()
-          })
+        fs.readFile(configuration.THUMBNAIL_URL_PREFIX + folderData.name + "\\" + folderData.items[0], (err, file) => {
+          const encoded = customBtoa(file)
+          const type = getFileExtention(folderData.items[0])
+          const imgSrcString = `data:image/${type};base64,${encoded}`;
+          folderData.thumbnail = imgSrcString
+          resolve()
         })
       })
     })
   ).then(() => {
-    res.send(result)
+    res.send(queryResult)
   })
-
 })
 
 router.get('/:id/detail', function (req, res, next) {
@@ -57,23 +50,20 @@ router.get('/:id/detail', function (req, res, next) {
 })
 
 router.get('/:id/thumbnail', function (req, res, next) {
-  Folder.find({ _id: req.params.id }, "name", (err, result) => {
-    fs.readdir(configuration.THUMBNAIL_URL_PREFIX + result[0].name, (err, fileList) => {
-      Promise.all(
-        fileList.map((fileName, index) => {
-          return new Promise((resolve, reject) => {
-            fs.readFile(configuration.THUMBNAIL_URL_PREFIX + result[0].name + "\\" + fileName, (err, file) => {
-              const encoded = customBtoa(file)
-              // const type = "jpg"
-              const type = getFileExtention(fileName)
-              const imgSrcString = `data:image/${type};base64,${encoded}`;
-              resolve(imgSrcString)
-            })
+  Folder.find({ _id: req.params.id }, "name items", (err, queryResult) => {
+    Promise.all(
+      queryResult[0].items.map((item, index) => {
+        return new Promise((resolve, reject) => {
+          fs.readFile(configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name + "\\" + item, (err, file) => {
+            const encoded = customBtoa(file)
+            const type = getFileExtention(item)
+            const imgSrcString = `data:image/${type};base64,${encoded}`;
+            resolve(imgSrcString)
           })
         })
-      ).then((result) => {
-        res.send(result)
       })
+    ).then((thumbnails) => {
+      res.send(thumbnails)
     })
   })
 })
@@ -82,10 +72,8 @@ router.get('/:id/item', function (req, res, next) {
   const id = req.params.id;
   const index = req.query.index;
 
-  Folder.find({ _id: id }, "name", (err, queryResult) => {
-    fs.readdir(configuration.URL_PREFIX + queryResult[0].name, (err, fileList) => {
-      res.sendFile(configuration.URL_PREFIX + queryResult[0].name + "\\" + fileList[index])
-    })
+  Folder.find({ _id: id }, "name items", (err, queryResult) => {
+    res.sendFile(configuration.URL_PREFIX + queryResult[0].name + "\\" + queryResult[0].items[index])
   })
 })
 
@@ -99,7 +87,7 @@ function customBtoa(buffer) {
 }
 
 function getFileExtention(fileName) {
-  return fileName.substring(fileName.lastIndexOf('.')+1, fileName.length) || fileName;
+  return fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length) || fileName;
 }
 
 module.exports = router;
