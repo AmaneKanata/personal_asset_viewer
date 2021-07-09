@@ -4,16 +4,17 @@ import { Route } from 'react-router';
 import FolderList from './components/FolderList.js'
 import FolderDetail from './components/FolderDetail.js'
 import Item from './components/Item.js'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Configuration from "./Configuration";
+import cheerio from 'cheerio'
 
-function App() {
+function App(props) {
 
   const [folderList, setFolderList] = useState([])
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
-    axios.get("http://192.168.0.3:3000/list", {
+    axios.get("http://localhost:3000/list", {
       params: {
         begin: current * Configuration.size,
         size: Configuration.size

@@ -10,7 +10,7 @@ function FolderDetail({ match, location, history }) {
     });
 
     useEffect(() => {
-        axios.get(`http://192.168.0.3:3000/${match.params.id}/detail`)
+        axios.get(`http://localhost:3000/${match.params.id}/detail`)
             .then((res) => {
                 setFolderDetail(res.data[0])
             })
