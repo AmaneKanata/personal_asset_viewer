@@ -151,7 +151,8 @@ function FolderThumbnail(props) {
         return (
             <div style={props.style}>
                 <Link to={"/" + folderData._id} key={folderData._id}>
-                    <figure className="folderThumbnailItem">
+                    <figure
+                        className={"folderThumbnailItem " + (props.columnIndex == 0 ? "left" : "right")}>
                         <img src={folderData.thumbnail} loading="lazy" />
                         <figcaption className="item-name">
                             <p>{folderData.name}</p>
