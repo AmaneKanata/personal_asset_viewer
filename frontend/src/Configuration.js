@@ -1,14 +1,14 @@
 const Configuration = {
     size: 1000,
     columnNumber: 2,
-    getGridheight: () => {
+    getWindowWidth: () => {
         const { innerWidth: width, innerHeight: height } = window;
-        return width*0.99/2
+        return width
     },
-    getGapheight: () => {
+    getWindowHeight: () => {
         const { innerWidth: width, innerHeight: height } = window;
-        return width*0.01
-    },
+        return height
+    }
 }
 
 export default Configuration;

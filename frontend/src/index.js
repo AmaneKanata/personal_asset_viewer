@@ -9,7 +9,7 @@ import ScrollMemory from 'react-router-scroll-memory';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ScrollMemory />
+      {/* <ScrollMemory /> */}
       <App></App>
     </BrowserRouter>
   </React.StrictMode>,
