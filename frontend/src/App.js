@@ -12,8 +12,6 @@ function App(props) {
   const [folderList, setFolderList] = useState([])
   const [current, setCurrent] = useState(0)
 
-  const [scrollOffset, setScrollOffset] = useState(0)
-
   useEffect(() => {
     axios.get("http://192.168.0.3:3000/list", {
       params: {
@@ -31,7 +29,7 @@ function App(props) {
   return (
     <div className="App">
       <Route path="/" exact>
-        <FolderList folderList={folderList} scrollOffset={scrollOffset} setScrollOffset={setScrollOffset}></FolderList>
+        <FolderList folderList={folderList}></FolderList>
       </Route>
       <Route path="/:id" component={FolderDetail} exact></Route>
       <Route path="/:id/item" component={Item} exact></Route>
