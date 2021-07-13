@@ -12,7 +12,7 @@ function FolderItems(props) {
         if (props.data.id === undefined) {
             return
         }
-        axios.get(`http://localhost:3000/${props.data.id}/Detail`)
+        axios.get(`http://192.168.0.2:3000/${props.data.id}/Detail`)
             .then((result) => {
                 setItems(result.data[0].items)
             })
@@ -31,7 +31,7 @@ function FolderItems(props) {
                                     maxIndex: items.length
                                 },
                             }}>
-                            <img src={`http://localhost:3000/${props.data.id}/thumbnail?index=${index}`}></img>
+                            <img src={`http://192.168.0.2:3000/${props.data.id}/thumbnail?index=${index}`}></img>
                         </Link>
                     </div>
                 )

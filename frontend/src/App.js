@@ -16,7 +16,7 @@ function App(props) {
   const [scrollOffset, setScrollOffset] = useState(0)
 
   useEffect(() => {
-    axios.get("http://localhost:3000/list", {
+    axios.get("http://192.168.0.2:3000/list", {
       params: {
         begin: current * Configuration.size,
         size: Configuration.size
