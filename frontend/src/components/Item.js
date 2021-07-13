@@ -23,7 +23,7 @@ function Item(props) {
             return (
                 <div key={index}>
                     <img
-                        src={`http://localhost:3000/${props.match.params.id}/item?index=${index}`}
+                        src={`http://192.168.0.3:3000/${props.match.params.id}/item?index=${index}`}
                         loading="lazy"
                         className ="page"
                     >

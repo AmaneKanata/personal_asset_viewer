@@ -6,7 +6,7 @@ var fs = require('fs')
 var btoa = require('btoa')
 
 var folderSchema = require('../schemas/folderSchema.js');
-var Folder = mongoose.model('Folder', folderSchema)
+var Folder = mongoose.model('Manga', folderSchema)
 
 var db = mongoose.connection;
 

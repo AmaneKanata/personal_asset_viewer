@@ -6,7 +6,6 @@ import FolderDetail from './components/FolderDetail.js'
 import Item from './components/Item.js'
 import { useEffect, useRef, useState } from 'react';
 import Configuration from "./Configuration";
-import cheerio from 'cheerio'
 
 function App(props) {
 
@@ -16,7 +15,7 @@ function App(props) {
   const [scrollOffset, setScrollOffset] = useState(0)
 
   useEffect(() => {
-    axios.get("http://localhost:3000/list", {
+    axios.get("http://192.168.0.3:3000/list", {
       params: {
         begin: current * Configuration.size,
         size: Configuration.size

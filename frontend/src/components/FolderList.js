@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { FixedSizeGrid } from 'react-window'
-import Autosizer from 'react-virtualized-auto-sizer'
 import '../css/folderList.scss'
 import Configuration from "../Configuration";
 import { useEffect, useRef, useState } from "react";
@@ -146,6 +145,10 @@ function FolderThumbnail(props) {
             <div style={props.style}>
                 <p>loading...</p>
             </div>
+        )
+    } else if(props.data[index] === undefined) {
+        return (
+            <div></div>
         )
     } else {
         return (
