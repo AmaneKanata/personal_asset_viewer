@@ -1,25 +1,19 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var configuration = require('../configuration.js')
-var fs = require('fs')
-var btoa = require('btoa')
+const express = require('express');
+// const btoa = require('btoa')
+const mongoose = require('mongoose');
+const configuration = require('../configuration')
+const folderSchema = require('../schemas/folderSchema');
 
-var folderSchema = require('../schemas/folderSchema.js');
-var Folder = mongoose.model('Folder', folderSchema)
-
-var db = mongoose.connection;
+const router = express.Router();
+const Folder = mongoose.model('Folder', folderSchema)
+const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 
-router.get('/list', async function (req, res, next) {
-  const begin = req.query.begin
-  const size = req.query.size
+router.get('/list', async (req, res) => {
+  const {begin, size, ...query} = req.query
 
-  delete req.query.begin
-  delete req.query.size
-
-  let queryResult = await Folder.find(req.query, "name thumbnail").lean()
+  let queryResult = await Folder.find(query, "name thumbnail").lean()
   queryResult = queryResult.splice(begin, size)
   res.send(queryResult)
 
@@ -40,7 +34,7 @@ router.get('/list', async function (req, res, next) {
   // })
 })
 
-router.get('/:id/detail', function (req, res, next) {
+router.get('/:id/detail', (req, res) => {
   Folder.find({ _id: req.params.id }, (err, result) => {
     if (err) {
       res.send(err)
@@ -50,9 +44,9 @@ router.get('/:id/detail', function (req, res, next) {
   })
 })
 
-router.get('/:id/thumbnail', function (req, res, next) {
+router.get('/:id/thumbnail', (req, res) => {
   Folder.find({ _id: req.params.id }, "name items", (err, queryResult) => {
-    res.sendFile(configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name + "\\" + queryResult[0].items[req.query.index])
+    res.sendFile(`${configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name  }\\${  queryResult[0].items[req.query.index]}`)
   })
   // Folder.find({ _id: req.params.id }, "name items", (err, queryResult) => {
   //   Promise.all(
@@ -72,26 +66,26 @@ router.get('/:id/thumbnail', function (req, res, next) {
   // })
 })
 
-router.get('/:id/item', function (req, res, next) {
-  const id = req.params.id;
-  const index = req.query.index;
+router.get('/:id/item', (req, res) => {
+  const {id} = req.params;
+  const {index} = req.query;
 
   Folder.find({ _id: id }, "name path items", (err, queryResult) => {
-    res.sendFile(queryResult[0].path + "\\" + queryResult[0].items[index])
+    res.sendFile(`${queryResult[0].path  }\\${  queryResult[0].items[index]}`)
   })
 })
 
-function customBtoa(buffer) {
-  const uint8Array = new Uint8Array(buffer)
-  const data = uint8Array.reduce((acc, value, index) => {
-    acc += String.fromCharCode(value)
-    return acc
-  }, '')
-  return btoa(data)
-}
+// function customBtoa(buffer) {
+//   const uint8Array = new Uint8Array(buffer)
+//   const data = uint8Array.reduce((acc, value, index) => {
+//     acc += String.fromCharCode(value)
+//     return acc
+//   }, '')
+//   return btoa(data)
+// }
 
-function getFileExtention(fileName) {
-  return fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length) || fileName;
-}
+// function getFileExtention(fileName) {
+//   return fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length) || fileName;
+// }
 
 module.exports = router;

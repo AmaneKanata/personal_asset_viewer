@@ -2,11 +2,11 @@ const Configuration = {
     size: 1000,
     columnNumber: 2,
     getWindowWidth: () => {
-        const { innerWidth: width, innerHeight: height } = window;
+        const { innerWidth: width } = window;
         return width
     },
     getWindowHeight: () => {
-        const { innerWidth: width, innerHeight: height } = window;
+        const { innerHeight: height } = window;
         return height
     }
 }
