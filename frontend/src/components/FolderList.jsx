@@ -6,13 +6,11 @@ import Configuration from '../Configuration'
 import '../css/folderList.scss'
 
 const windowWidth = Configuration.getWindowWidth()
-let folderList
 
-function cellRenderer({
-  columnIndex, rowIndex, style, key
-}) {
+function cellRendererWrapper(folderList) {
+  return function cellRenderer({ columnIndex, rowIndex, style, key }) {
     const index = columnIndex + rowIndex * 2
-  
+
     if (folderList === undefined) {
       return (
         <div style={style} key={key}>
@@ -32,7 +30,11 @@ function cellRenderer({
               columnIndex === 0 ? 'left' : 'right'
             }`}
           >
-            <img src={folderData.thumbnail} loading="lazy" alt="" />
+            <img
+              src={`http://localhost:3000/${folderData._id}/thumbnail?index=0`}
+              loading="lazy"
+              alt=""
+            />
             <figcaption className="item-name">
               <p>{folderData.name}</p>
             </figcaption>
@@ -41,13 +43,9 @@ function cellRenderer({
       </div>
     )
   }
-  
+}
 
 function FolderList(props) {
-  useEffect(() => {
-    folderList = props.folderList
-  })
-
   return (
     <WindowScroller>
       {({ height, registerChild, isScrolling, scrollTop }) => (
@@ -63,7 +61,7 @@ function FolderList(props) {
             isScrolling={isScrolling}
             scrollTop={scrollTop}
             onScroll={() => {}}
-            cellRenderer={cellRenderer}
+            cellRenderer={cellRendererWrapper(props.folderList)}
           />
         </div>
       )}

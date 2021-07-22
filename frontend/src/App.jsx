@@ -5,30 +5,27 @@ import { Route } from 'react-router';
 import FolderList from './components/FolderList'
 import FolderDetail from './components/FolderDetail'
 import Item from './components/Item'
-import Configuration from "./Configuration";
+import Search from './components/Search'
 
 function App() {
 
+  const [queryData, setQueryData] = useState({})
   const [folderList, setFolderList] = useState([])
-  const [current, setCurrent] = useState(0)
 
   useEffect(() => {
+    console.log(queryData)
+
     axios.get("http://localhost:3000/list", {
-      params: {
-        begin: current * Configuration.size,
-        size: Configuration.size
-      }
+      params: queryData
     }).then((res) => {
-      if (res.data.length > 0) {
-        setFolderList(folderList.concat(res.data))
-        setCurrent(current + 1)
-      }
+      setFolderList(res.data)
     })
-  }, [current])
+  }, [queryData])
 
   return (
     <div className="App">
       <Route path="/" exact>
+        <Search setQueryData={setQueryData}/>
         <FolderList folderList={folderList}/>
       </Route>
       <Route path="/:id" component={FolderDetail} exact/>

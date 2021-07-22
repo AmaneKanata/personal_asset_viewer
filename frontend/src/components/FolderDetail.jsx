@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import FolderItems from './FolderItems'
+import FolderItems from "./FolderItems"
 
 function FolderDetail(props) {
   const [folderDetail, setFolderDetail] = useState({

@@ -1,37 +1,27 @@
-const express = require('express');
+const express = require('express')
 // const btoa = require('btoa')
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const configuration = require('../configuration')
-const folderSchema = require('../schemas/folderSchema');
+const folderSchema = require('../schemas/folderSchema')
 
-const router = express.Router();
+const router = express.Router()
 const Folder = mongoose.model('Folder', folderSchema)
-const db = mongoose.connection;
+const db = mongoose.connection
 
-db.on('error', console.error.bind(console, 'MongoDB connection error'));
+db.on('error', console.error.bind(console, 'MongoDB connection error'))
 
 router.get('/list', async (req, res) => {
-  const {begin, size, ...query} = req.query
 
-  let queryResult = await Folder.find(query, "name thumbnail").lean()
-  queryResult = queryResult.splice(begin, size)
+  console.log(req.query)
+
+  let queryObject = Folder.find({}, 'name')
+
+  if (req.query.name) {
+    queryObject = queryObject.regex('name', new RegExp(req.query.name))
+  }
+
+  const queryResult = await queryObject.lean()
   res.send(queryResult)
-
-  // Promise.all(
-  //   queryResult.map((folderData, index) => {
-  //     return new Promise((resolve, rejext) => {
-  //       fs.readFile(configuration.THUMBNAIL_URL_PREFIX + folderData.name + "\\" + folderData.items[0], (err, file) => {
-  //         const encoded = customBtoa(file)
-  //         const type = getFileExtention(folderData.items[0])
-  //         const imgSrcString = `data:image/${type};base64,${encoded}`;
-  //         folderData.thumbnail = imgSrcString
-  //         resolve()
-  //       })
-  //     })
-  //   })
-  // ).then(() => {
-  //   res.send(queryResult)
-  // })
 })
 
 router.get('/:id/detail', (req, res) => {
@@ -45,8 +35,14 @@ router.get('/:id/detail', (req, res) => {
 })
 
 router.get('/:id/thumbnail', (req, res) => {
-  Folder.find({ _id: req.params.id }, "name items", (err, queryResult) => {
-    res.sendFile(`${configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name  }\\${  queryResult[0].items[req.query.index]}`)
+  Folder.find({ _id: req.params.id }, 'name items', (err, queryResult) => {
+    res.sendFile(
+      (queryResult[0].items[req.query.index] &&
+        `${configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name}\\${
+          queryResult[0].items[req.query.index]
+        }`) || // 썸네일이 존재하면 그것을
+        `${configuration.THUMBNAIL_URL_PREFIX}\\NoThumbnail.jpg` // 없으면 nothumbnail을
+    )
   })
   // Folder.find({ _id: req.params.id }, "name items", (err, queryResult) => {
   //   Promise.all(
@@ -67,11 +63,11 @@ router.get('/:id/thumbnail', (req, res) => {
 })
 
 router.get('/:id/item', (req, res) => {
-  const {id} = req.params;
-  const {index} = req.query;
+  const { id } = req.params
+  const { index } = req.query
 
-  Folder.find({ _id: id }, "name path items", (err, queryResult) => {
-    res.sendFile(`${queryResult[0].path  }\\${  queryResult[0].items[index]}`)
+  Folder.find({ _id: id }, 'name path items', (err, queryResult) => {
+    res.sendFile(`${queryResult[0].path}\\${queryResult[0].items[index]}`)
   })
 })
 
@@ -88,4 +84,4 @@ router.get('/:id/item', (req, res) => {
 //   return fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length) || fileName;
 // }
 
-module.exports = router;
+module.exports = router
