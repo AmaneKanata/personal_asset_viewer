@@ -11,13 +11,14 @@ const db = mongoose.connection
 db.on('error', console.error.bind(console, 'MongoDB connection error'))
 
 router.get('/list', async (req, res) => {
-
-  console.log(req.query)
-
-  let queryObject = Folder.find({}, 'name')
+  let queryObject = Folder.find({}, 'name favorite')
 
   if (req.query.name) {
     queryObject = queryObject.regex('name', new RegExp(req.query.name))
+  }
+
+  if(req.query.favorite) {
+    queryObject = queryObject.where('favorite', req.query.favorite)
   }
 
   const queryResult = await queryObject.lean()
@@ -44,22 +45,6 @@ router.get('/:id/thumbnail', (req, res) => {
         `${configuration.THUMBNAIL_URL_PREFIX}\\NoThumbnail.jpg` // 없으면 nothumbnail을
     )
   })
-  // Folder.find({ _id: req.params.id }, "name items", (err, queryResult) => {
-  //   Promise.all(
-  //     queryResult[0].items.map((item, index) => {
-  //       return new Promise((resolve, reject) => {
-  //         fs.readFile(configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name + "\\" + item, (err, file) => {
-  //           const encoded = customBtoa(file)
-  //           const type = getFileExtention(item)
-  //           const imgSrcString = `data:image/${type};base64,${encoded}`;
-  //           resolve(imgSrcString)
-  //         })
-  //       })
-  //     })
-  //   ).then((thumbnails) => {
-  //     res.send(thumbnails)
-  //   })
-  // })
 })
 
 router.get('/:id/item', (req, res) => {
@@ -71,17 +56,13 @@ router.get('/:id/item', (req, res) => {
   })
 })
 
-// function customBtoa(buffer) {
-//   const uint8Array = new Uint8Array(buffer)
-//   const data = uint8Array.reduce((acc, value, index) => {
-//     acc += String.fromCharCode(value)
-//     return acc
-//   }, '')
-//   return btoa(data)
-// }
+router.patch('/:id/favorite', (req, res) => {
+  const { id } = req.params
+  const { target } = req.body
 
-// function getFileExtention(fileName) {
-//   return fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length) || fileName;
-// }
+  Folder.updateOne({ _id: id }, { favorite: target }, (err, result) => {
+    res.send(result)
+  })
+})
 
 module.exports = router

@@ -21,10 +21,12 @@ function Search(props) {
   }
 
   return (
-    <div>
+    <div className="search">
       <form onSubmit={handleSubmit}>
-        <input value={queryString} onChange={handleChange} />
-        <button type="submit">search</button>
+        <input type="input" value={queryString} onChange={handleChange} className="text_input" placeholder="Search..."/>
+        <button type="submit" className="search_button" >
+          <img src="./search.png" alt="" />
+        </button>
       </form>
     </div>
   )
