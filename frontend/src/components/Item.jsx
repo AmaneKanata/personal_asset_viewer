@@ -27,9 +27,9 @@ function Item(props) {
   return (
     <div>
       <Slider
-        lazyLoad="true"
-        infinite="false"
-        arrows="false"
+        infinite={false}
+        lazyLoad="progressive"
+        arrows={false}
         ref={slider}
         className="slider"
       >

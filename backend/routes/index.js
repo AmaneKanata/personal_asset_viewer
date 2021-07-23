@@ -25,6 +25,10 @@ router.get('/list', async (req, res) => {
   res.send(queryResult)
 })
 
+router.delete('/:id', (req, res) => {
+  res.send("ok!")
+})
+
 router.get('/:id/detail', (req, res) => {
   Folder.find({ _id: req.params.id }, (err, result) => {
     if (err) {

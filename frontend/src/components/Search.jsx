@@ -18,6 +18,7 @@ function Search(props) {
   const handleSubmit = (event) => {
     event.preventDefault()
     props.setQueryData(makeQueryData(queryString))
+    setQueryString("")
   }
 
   return (

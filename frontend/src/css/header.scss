@@ -13,7 +13,17 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 91vw;
+    left: 89vw;
+    height: 7vw;
+    width: 7vw;
+    filter: invert(100%);
+  }
+
+  .delete_button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 89vw;
     height: 7vw;
     width: 7vw;
     filter: invert(100%);
@@ -22,7 +32,7 @@
   .search {
     .text_input {
       position: absolute;
-      width: 74%;
+      width: 72%;
       left: 3%;
       top: 50%;
       transform: translateY(-50%);
@@ -45,7 +55,7 @@
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        left: 82vw;
+        left: 80vw;
         height: 7vw;
         width: 7vw;
         filter: invert(100%);
