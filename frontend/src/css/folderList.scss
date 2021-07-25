@@ -40,6 +40,16 @@
         opacity: 30%;
       }
     }
+
+    &.checked {
+      z-index: 1;
+      width: 15%;
+      height: 15%;
+      position: absolute;
+      bottom: 83%;
+      right: 83%;
+      margin: 0;
+    }
   }
 
   .item-name {

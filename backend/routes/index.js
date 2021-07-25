@@ -5,7 +5,7 @@ const configuration = require('../configuration')
 const folderSchema = require('../schemas/folderSchema')
 
 const router = express.Router()
-const Folder = mongoose.model('Folder', folderSchema)
+const Folder = mongoose.model('Manga', folderSchema)
 const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'MongoDB connection error'))
@@ -14,7 +14,7 @@ router.get('/list', async (req, res) => {
   let queryObject = Folder.find({}, 'name favorite')
 
   if (req.query.name) {
-    queryObject = queryObject.regex('name', new RegExp(req.query.name))
+    queryObject = queryObject.regex('name', new RegExp(req.query.name, "i"))
   }
 
   if(req.query.favorite) {
@@ -26,7 +26,13 @@ router.get('/list', async (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
-  res.send("ok!")
+  Folder.deleteOne({_id: req.params.id}, (err) => {
+    if(err) {
+      res.statusCode(400)
+      res.send("fail to delete")
+    }
+    res.send("delete complete")
+  })
 })
 
 router.get('/:id/detail', (req, res) => {

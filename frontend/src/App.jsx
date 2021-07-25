@@ -28,6 +28,12 @@ function App() {
     setSelectedFolderList([...selectedFolderList, id])
   }
 
+  function removeSelectedFolder(id) {
+    setSelectedFolderList(selectedFolderList.filter((value) => {
+     return value !== id
+    }))
+  }
+
   async function deleteSelectedFolders() {
     await Promise.all(
       selectedFolderList.map((selectedFolderId) =>
@@ -35,6 +41,7 @@ function App() {
       )
     )
     setSelectedFolderList([])
+    setState(Configuration.STATE_NORMAL)
     getFolderList()
   }
 
@@ -55,6 +62,8 @@ function App() {
           folderList={folderList}
           getFolderList={getFolderList}
           addSelectedFolder={addSelectedFolder}
+          removeSelectedFolder={removeSelectedFolder}
+          selectedFolderList={selectedFolderList}
         />
       </Route>
       <Route path="/:id" component={FolderDetail} exact />
