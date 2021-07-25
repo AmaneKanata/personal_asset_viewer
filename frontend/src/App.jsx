@@ -11,7 +11,7 @@ import Configuration from './Configuration'
 function App() {
   const [queryData, setQueryData] = useState({})
   const [folderList, setFolderList] = useState([])
-  const [state, setState] = useState(Configuration.STATE_DELETING)
+  const [state, setState] = useState(Configuration.STATE_NORMAL)
   const [selectedFolderList, setSelectedFolderList] = useState([])
 
   function getFolderList() {
