@@ -29,9 +29,7 @@ function App() {
   }
 
   function removeSelectedFolder(id) {
-    setSelectedFolderList(selectedFolderList.filter((value) => {
-     return value !== id
-    }))
+    setSelectedFolderList(selectedFolderList.filter((value) => value !== id))
   }
 
   async function deleteSelectedFolders() {
@@ -54,8 +52,10 @@ function App() {
       <Route path="/" exact>
         <Header
           state={state}
+          setState={setState}
           setQueryData={setQueryData}
           deleteSelectedFolders={deleteSelectedFolders}
+          setSelectedFolderList={setSelectedFolderList}
         />
         <FolderList
           state={state}

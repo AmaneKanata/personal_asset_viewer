@@ -19,21 +19,41 @@
     filter: invert(100%);
   }
 
+  .menu_button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 4vw;
+    height: 7vw;
+    width: 7vw;
+    filter: invert(100%);
+  }
+
   .delete_button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 89vw;
+    left: 80vw;
     height: 7vw;
     width: 7vw;
+    filter: invert(100%);
+  }
+
+  .close_button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 90vw;
+    height: 6vw;
+    width: 6vw;
     filter: invert(100%);
   }
 
   .search {
     .text_input {
       position: absolute;
-      width: 72%;
-      left: 3%;
+      width: 60%;
+      left: 15vw;
       top: 50%;
       transform: translateY(-50%);
       border: 0;
