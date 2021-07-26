@@ -9,6 +9,7 @@ function FolderDetail(props) {
   })
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     axios
       .get(`http://localhost:3000/${props.match.params.id}/detail`)
       .then((res) => {

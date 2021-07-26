@@ -10,14 +10,15 @@ function makeQueryData(queryString) {
   }
 }
 
-function Search(props) {
+function Search({setQueryData, moveScrolltoTop}) {
   const [queryString, setQueryString] = useState('')
 
   const handleChange = ({ target: { value } }) => setQueryString(value)
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    props.setQueryData(makeQueryData(queryString))
+    setQueryData(makeQueryData(queryString))
+    moveScrolltoTop()
     setQueryString("")
   }
 
@@ -35,6 +36,7 @@ function Search(props) {
 
 Search.propTypes = {
   setQueryData: PropTypes.func.isRequired,
+  moveScrolltoTop: PropTypes.func.isRequired
 }
 
 export default Search

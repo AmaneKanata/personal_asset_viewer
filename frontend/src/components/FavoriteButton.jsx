@@ -3,7 +3,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-function FavoriteButton({ setQueryData }) {
+function FavoriteButton({ setQueryData, moveScrolltoTop }) {
 
     const queryString = {
         favorite : true
@@ -11,6 +11,7 @@ function FavoriteButton({ setQueryData }) {
 
     const handleOnClick = () => {
         setQueryData(queryString)
+        moveScrolltoTop()
     }
 
     return (
@@ -19,7 +20,8 @@ function FavoriteButton({ setQueryData }) {
 }
 
 FavoriteButton.propTypes = {
-    setQueryData: PropTypes.func.isRequired
+    setQueryData: PropTypes.func.isRequired,
+    moveScrolltoTop: PropTypes.func.isRequired
 }
 
 export default FavoriteButton

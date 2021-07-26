@@ -14,6 +14,10 @@ function App() {
   const [state, setState] = useState(Configuration.STATE_NORMAL)
   const [selectedFolderList, setSelectedFolderList] = useState([])
 
+  function moveScrolltoTop() {
+    window.scrollTo(0, 0)
+  }
+
   function getFolderList() {
     axios
       .get('http://localhost:3000/list', {
@@ -56,6 +60,7 @@ function App() {
           setQueryData={setQueryData}
           deleteSelectedFolders={deleteSelectedFolders}
           setSelectedFolderList={setSelectedFolderList}
+          moveScrolltoTop={moveScrolltoTop}
         />
         <FolderList
           state={state}
