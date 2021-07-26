@@ -3,10 +3,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-function DeleteButton({ deleteSelectedFolders }) {
+function DeleteButton({ match, deleteSelectedFolders }) {
 
     const handleOnClick = () => {
-        deleteSelectedFolders()
+        if(match === undefined) {
+            deleteSelectedFolders()
+            return
+        }
+        deleteSelectedFolders(match.params.id)
     }
 
     return (
@@ -15,7 +19,16 @@ function DeleteButton({ deleteSelectedFolders }) {
 }
 
 DeleteButton.propTypes = {
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            id: PropTypes.string
+        })
+    }),
     deleteSelectedFolders : PropTypes.func.isRequired
+}
+
+DeleteButton.defaultProps = {
+    match: undefined
 }
 
 export default DeleteButton

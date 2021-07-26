@@ -14,10 +14,10 @@ router.get('/list', async (req, res) => {
   let queryObject = Folder.find({}, 'name favorite')
 
   if (req.query.name) {
-    queryObject = queryObject.regex('name', new RegExp(req.query.name, "i"))
+    queryObject = queryObject.regex('name', new RegExp(req.query.name, 'i'))
   }
 
-  if(req.query.favorite) {
+  if (req.query.favorite) {
     queryObject = queryObject.where('favorite', req.query.favorite)
   }
 
@@ -25,13 +25,33 @@ router.get('/list', async (req, res) => {
   res.send(queryResult)
 })
 
-router.delete('/:id', (req, res) => {
-  Folder.deleteOne({_id: req.params.id}, (err) => {
-    if(err) {
-      res.statusCode(400)
-      res.send("fail to delete")
+router.delete('/:id/item', (req, res) => {
+  Folder.updateOne(
+    { _id: req.params.id },
+    {
+      $pull: {
+        items: {
+          $in: req.query.fileName,
+        },
+      },
+    },
+    (err) => {
+      if (err) {
+        res.statusCode(400)
+        res.send('fail to delete')
+      }
+      res.send('delete complete')
     }
-    res.send("delete complete")
+  )
+})
+
+router.delete('/:id', (req, res) => {
+  Folder.deleteOne({ _id: req.params.id }, (err) => {
+    if (err) {
+      res.statusCode(400)
+      res.send('fail to delete')
+    }
+    res.send('delete complete')
   })
 })
 

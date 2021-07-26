@@ -6,10 +6,9 @@ import DeleteButton from './DeleteButton'
 import MenuButton from './MenuButton'
 import CloseButton from './CloseButton'
 import Menu from './Menu'
-import '../css/header.scss'
 import Configuration from '../Configuration'
 
-function Header({ state, setState, setQueryData, deleteSelectedFolders, setSelectedFolderList, moveScrolltoTop }) {
+function Header({ state, setState, setQueryData, deleteSelectedFolders, setSelectedFolderList, moveScrolltoTop}) {
   const [menuState, setMenuState] = useState(false)
 
   return (
@@ -38,7 +37,7 @@ Header.propTypes = {
   setQueryData: PropTypes.func.isRequired,
   deleteSelectedFolders: PropTypes.func.isRequired,
   setSelectedFolderList: PropTypes.func.isRequired,
-  moveScrolltoTop: PropTypes.func.isRequired
+  moveScrolltoTop: PropTypes.func.isRequired,
 }
 
 export default Header
