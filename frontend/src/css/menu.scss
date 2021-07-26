@@ -1,8 +1,10 @@
-.MuiPaper-root {
-    color: white;
-    background-color: #1d1f22;
+.MuiPaper-root { 
+    color: white !important;
+    background-color: #1d1f22 !important;
+    width: 40%;
+    align-items: center;
 
-    .MuiTypography-body1 {
-        font-family: 'Malgun Gothic';
+    .MuiListItem-button {
+        font-family: 'Malgun Gothic' !important;
     }
 }

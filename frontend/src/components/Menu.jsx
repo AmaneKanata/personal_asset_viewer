@@ -10,6 +10,7 @@ import Configuration from '../Configuration'
 import '../css/menu.scss'
 
 function Menu({ menuState, setMenuState, setState }) {
+
   const onMenuClose = () => {
     setMenuState(false)
   }
