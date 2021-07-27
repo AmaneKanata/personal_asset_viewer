@@ -67,13 +67,23 @@ router.get('/:id/detail', (req, res) => {
 
 router.get('/:id/thumbnail', (req, res) => {
   Folder.find({ _id: req.params.id }, 'name items', (err, queryResult) => {
-    res.sendFile(
-      (queryResult[0].items[req.query.index] &&
-        `${configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name}\\${
-          queryResult[0].items[req.query.index]
-        }`) || // 썸네일이 존재하면 그것을
-        `${configuration.THUMBNAIL_URL_PREFIX}\\NoThumbnail.jpg` // 없으면 nothumbnail을
-    )
+    if(req.query.name) {
+      res.sendFile(
+        (queryResult[0].items.includes(req.query.name) &&
+          `${configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name}\\${
+            req.query.name
+          }`) ||
+          `${configuration.THUMBNAIL_URL_PREFIX}\\NoThumbnail.jpg` 
+      )
+    } else if(req.query.index) {
+      res.sendFile(
+        (queryResult[0].items[req.query.index] &&
+          `${configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name}\\${
+            queryResult[0].items[req.query.index]
+          }`) || // 썸네일이 존재하면 그것을
+          `${configuration.THUMBNAIL_URL_PREFIX}\\NoThumbnail.jpg` // 없으면 nothumbnail을
+      )
+    }
   })
 })
 

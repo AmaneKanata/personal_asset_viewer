@@ -17,6 +17,7 @@ function FolderItems({
 
   const loadItems = () => {
     axios.get(`http://localhost:3000/${id}/Detail`).then((result) => {
+      setItems([])
       setItems(result.data[0].items)
     })
   }
@@ -62,13 +63,15 @@ function FolderItems({
               }}
             >
               <img
-                src={`http://localhost:3000/${id}/thumbnail?index=${index}`}
+                src={`http://localhost:3000/${id}/thumbnail?name=${item}`}
+                loading="lazy"
                 alt=""
               />
             </Link>
           ) : (
             <img
-              src={`http://localhost:3000/${id}/thumbnail?index=${index}`}
+              src={`http://localhost:3000/${id}/thumbnail?name=${item}`}
+              loading="lazy"
               alt=""
             />
           )}

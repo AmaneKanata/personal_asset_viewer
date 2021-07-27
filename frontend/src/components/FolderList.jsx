@@ -58,7 +58,14 @@ FavoriteButton.propTypes = {
   getFolderList: PropTypes.func.isRequired,
 }
 
-function cellRendererWrapper({ state, folderList, getFolderList, addSelectedFolder, removeSelectedFolder, selectedFolderList }) {
+function cellRendererWrapper({
+  state,
+  folderList,
+  getFolderList,
+  addSelectedFolder,
+  removeSelectedFolder,
+  selectedFolderList,
+}) {
   return function cellRenderer({ columnIndex, rowIndex, style, key }) {
     const index = columnIndex + rowIndex * 2
 
@@ -74,7 +81,7 @@ function cellRendererWrapper({ state, folderList, getFolderList, addSelectedFold
     }
     const folderData = folderList[index]
     const selectFolder = () => {
-      if(selectedFolderList.includes(folderData._id)) {
+      if (selectedFolderList.includes(folderData._id)) {
         removeSelectedFolder(folderData._id)
       } else {
         addSelectedFolder(folderData._id)
@@ -83,25 +90,29 @@ function cellRendererWrapper({ state, folderList, getFolderList, addSelectedFold
     return (
       <div style={style} key={key}>
         <figure
-          className={`folderThumbnailItem ${columnIndex === 0 ? 'left' : 'right'
-            }`}
+          className={`folderThumbnailItem ${
+            columnIndex === 0 ? 'left' : 'right'
+          }`}
           onClick={
             state === Configuration.STATE_DELETING ? selectFolder : undefined
           }
         >
-          {
-            state === Configuration.STATE_DELETING &&
-            selectedFolderList.includes(folderData._id) &&
-            <img src="./checked.png" alt="" id="checkedMark" className="checked" />
-          }
-          {
-            state === Configuration.STATE_NORMAL &&
+          {state === Configuration.STATE_DELETING &&
+            selectedFolderList.includes(folderData._id) && (
+              <img
+                src="./checked.png"
+                alt=""
+                id="checkedMark"
+                className="checked"
+              />
+            )}
+          {state === Configuration.STATE_NORMAL && (
             <FavoriteButton
               state={folderData.favorite}
               id={folderData._id}
               getFolderList={getFolderList}
             />
-          }
+          )}
           {state === Configuration.STATE_NORMAL ? (
             <>
               <Link to={`/${folderData._id}`} key={folderData._id}>
@@ -132,14 +143,14 @@ function FolderList(props) {
             rowHeight={windowWidth / 2}
             isScrolling={isScrolling}
             scrollTop={scrollTop}
-            onScroll={() => { }}
+            onScroll={() => {}}
             cellRenderer={cellRendererWrapper({
               state: props.state,
               folderList: props.folderList,
               getFolderList: props.getFolderList,
               addSelectedFolder: props.addSelectedFolder,
               removeSelectedFolder: props.removeSelectedFolder,
-              selectedFolderList: props.selectedFolderList
+              selectedFolderList: props.selectedFolderList,
             })}
           />
         </div>
@@ -154,7 +165,7 @@ FolderList.propTypes = {
   getFolderList: PropTypes.func.isRequired,
   addSelectedFolder: PropTypes.func.isRequired,
   removeSelectedFolder: PropTypes.func.isRequired,
-  selectedFolderList: PropTypes.arrayOf(PropTypes.string).isRequired
+  selectedFolderList: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default FolderList
