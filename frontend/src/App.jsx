@@ -3,16 +3,20 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 import './css/header.scss'
 import { Route } from 'react-router'
+import { useDispatch } from 'react-redux'
 import FolderList from './components/FolderList'
 import FolderDetail from './components/FolderDetail'
 import Item from './components/Item'
 import Header from './components/Header'
 import ThumbnailHeader from './components/ThumbnailHeader'
 import Configuration from './Configuration'
+import folderListManager from './redux_modules/folderList'
 
 function App() {
+
+  const dispatch = useDispatch()
+
   const [queryData, setQueryData] = useState({})
-  const [folderList, setFolderList] = useState([])
   const [state, setState] = useState(Configuration.STATE_NORMAL)
   const [thumbnailListState, setThumbnailListState] = useState(
     Configuration.STATE_NORMAL
@@ -30,7 +34,8 @@ function App() {
         params: queryData,
       })
       .then((res) => {
-        setFolderList(res.data)
+        dispatch(folderListManager.setFolderList(res.data))
+        // setFolderList(res.data)
       })
   }
 
@@ -96,7 +101,6 @@ function App() {
         />
         <FolderList
           state={state}
-          folderList={folderList}
           getFolderList={getFolderList}
           addSelectedFolder={addSelectedFolder}
           removeSelectedFolder={removeSelectedFolder}

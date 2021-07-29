@@ -9,7 +9,10 @@ const Configuration = {
         return height
     },
     STATE_NORMAL: "normal",
-    STATE_DELETING: "deleting"
+    STATE_DELETING: "deleting",
+    SCENE_FOLDER_LIST: "folderList",
+    SCENE_FOLDER_DETAIL: "folderDetail",
+    SCENE_ITEM: "item"
 }
 
 export default Configuration;

@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Link } from 'react-router-dom'
 import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Grid, WindowScroller } from 'react-virtualized'
 import PropTypes from 'prop-types'
 import axios from 'axios'
@@ -129,6 +130,11 @@ function cellRendererWrapper({
 }
 
 function FolderList(props) {
+
+  const { folderList } = useSelector((state) => ({
+      folderList: state.folderList.folderList
+    }))
+
   return (
     <WindowScroller>
       {({ height, registerChild, isScrolling, scrollTop }) => (
@@ -138,7 +144,7 @@ function FolderList(props) {
             height={height}
             width={windowWidth}
             columnCount={Configuration.columnNumber}
-            rowCount={Math.ceil(props.folderList.length / 2)}
+            rowCount={Math.ceil(folderList.length / 2)}
             columnWidth={windowWidth / 2}
             rowHeight={windowWidth / 2}
             isScrolling={isScrolling}
@@ -146,7 +152,7 @@ function FolderList(props) {
             onScroll={() => {}}
             cellRenderer={cellRendererWrapper({
               state: props.state,
-              folderList: props.folderList,
+              folderList,
               getFolderList: props.getFolderList,
               addSelectedFolder: props.addSelectedFolder,
               removeSelectedFolder: props.removeSelectedFolder,
@@ -161,7 +167,6 @@ function FolderList(props) {
 
 FolderList.propTypes = {
   state: PropTypes.string.isRequired,
-  folderList: PropTypes.arrayOf(PropTypes.object).isRequired,
   getFolderList: PropTypes.func.isRequired,
   addSelectedFolder: PropTypes.func.isRequired,
   removeSelectedFolder: PropTypes.func.isRequired,
