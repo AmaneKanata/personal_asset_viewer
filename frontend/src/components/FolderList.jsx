@@ -3,12 +3,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Link } from 'react-router-dom'
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { Grid, WindowScroller } from 'react-virtualized'
+import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import Configuration from '../Configuration'
 import '../css/folderList.scss'
+import folderListManager from '../redux_modules/folderList'
 
 const windowWidth = Configuration.getWindowWidth()
 
@@ -62,7 +63,6 @@ FavoriteButton.propTypes = {
 function cellRendererWrapper({
   state,
   folderList,
-  getFolderList,
   addSelectedFolder,
   removeSelectedFolder,
   selectedFolderList,
@@ -108,11 +108,7 @@ function cellRendererWrapper({
               />
             )}
           {state === Configuration.STATE_NORMAL && (
-            <FavoriteButton
-              state={folderData.favorite}
-              id={folderData._id}
-              getFolderList={getFolderList}
-            />
+            <FavoriteButton state={folderData.favorite} id={folderData._id} />
           )}
           {state === Configuration.STATE_NORMAL ? (
             <>
@@ -130,10 +126,23 @@ function cellRendererWrapper({
 }
 
 function FolderList(props) {
+  const dispatch = useDispatch()
+  const { queryData, folderList } = useSelector((state) => {
 
-  const { folderList } = useSelector((state) => ({
+    console.log(state)
+    return {
+      queryData: state.query.queryData,
       folderList: state.folderList.folderList
-    }))
+    }
+  })
+
+  useEffect(() => {
+    if(queryData === undefined) {
+      return
+    }
+    console.log(queryData)
+    dispatch(folderListManager.loadFolderList(queryData))
+  }, [queryData])
 
   return (
     <WindowScroller>
@@ -144,7 +153,9 @@ function FolderList(props) {
             height={height}
             width={windowWidth}
             columnCount={Configuration.columnNumber}
-            rowCount={Math.ceil(folderList.length / 2)}
+            rowCount={
+              folderList !== undefined ? Math.ceil(folderList.length / 2) : 0
+            }
             columnWidth={windowWidth / 2}
             rowHeight={windowWidth / 2}
             isScrolling={isScrolling}
@@ -153,7 +164,6 @@ function FolderList(props) {
             cellRenderer={cellRendererWrapper({
               state: props.state,
               folderList,
-              getFolderList: props.getFolderList,
               addSelectedFolder: props.addSelectedFolder,
               removeSelectedFolder: props.removeSelectedFolder,
               selectedFolderList: props.selectedFolderList,
@@ -167,7 +177,6 @@ function FolderList(props) {
 
 FolderList.propTypes = {
   state: PropTypes.string.isRequired,
-  getFolderList: PropTypes.func.isRequired,
   addSelectedFolder: PropTypes.func.isRequired,
   removeSelectedFolder: PropTypes.func.isRequired,
   selectedFolderList: PropTypes.arrayOf(PropTypes.string).isRequired,

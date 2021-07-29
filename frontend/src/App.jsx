@@ -3,20 +3,15 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 import './css/header.scss'
 import { Route } from 'react-router'
-import { useDispatch } from 'react-redux'
 import FolderList from './components/FolderList'
 import FolderDetail from './components/FolderDetail'
 import Item from './components/Item'
 import Header from './components/Header'
 import ThumbnailHeader from './components/ThumbnailHeader'
 import Configuration from './Configuration'
-import folderListManager from './redux_modules/folderList'
 
 function App() {
 
-  const dispatch = useDispatch()
-
-  const [queryData, setQueryData] = useState({})
   const [state, setState] = useState(Configuration.STATE_NORMAL)
   const [thumbnailListState, setThumbnailListState] = useState(
     Configuration.STATE_NORMAL
@@ -28,17 +23,6 @@ function App() {
     window.scrollTo(0, 0)
   }
 
-  function getFolderList() {
-    axios
-      .get('http://localhost:3000/list', {
-        params: queryData,
-      })
-      .then((res) => {
-        dispatch(folderListManager.setFolderList(res.data))
-        // setFolderList(res.data)
-      })
-  }
-
   function addSelectedFolder(id) {
     setSelectedFolderList([...selectedFolderList, id])
   }
@@ -48,14 +32,14 @@ function App() {
   }
 
   async function deleteSelectedFolders() {
-    await Promise.all(
-      selectedFolderList.map((selectedFolderId) =>
-        axios.delete(`http://localhost:3000/${selectedFolderId}`)
-      )
-    )
-    setSelectedFolderList([])
-    setState(Configuration.STATE_NORMAL)
-    getFolderList()
+    // await Promise.all(
+    //   selectedFolderList.map((selectedFolderId) =>
+    //     axios.delete(`http://localhost:3000/${selectedFolderId}`)
+    //   )
+    // )
+    // setSelectedFolderList([])
+    // setState(Configuration.STATE_NORMAL)
+    // getFolderList()
   }
 
   function addSelectedFile(index) {
@@ -84,24 +68,18 @@ function App() {
     setThumbnailListState(Configuration.STATE_NORMAL)
   }
 
-  useEffect(() => {
-    getFolderList()
-  }, [queryData])
-
   return (
     <div className="App">
       <Route path="/" exact>
         <Header
           state={state}
           setState={setState}
-          setQueryData={setQueryData}
           deleteSelectedFolders={deleteSelectedFolders}
           setSelectedFolderList={setSelectedFolderList}
           moveScrolltoTop={moveScrolltoTop}
         />
         <FolderList
           state={state}
-          getFolderList={getFolderList}
           addSelectedFolder={addSelectedFolder}
           removeSelectedFolder={removeSelectedFolder}
           selectedFolderList={selectedFolderList}

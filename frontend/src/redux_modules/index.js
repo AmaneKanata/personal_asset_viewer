@@ -8,7 +8,7 @@ import selectedFileList from './selectedFileList'
 const rootReducer = combineReducers({
   appState: appState.reduce,
   folderList: folderList.reduce,
-  qurey: query.reduce,
+  query: query.reduce,
   selectedFolderList: selectedFolderList.reduce,
   selectedFildList: selectedFileList.reduce,
 })

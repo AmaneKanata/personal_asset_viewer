@@ -2,15 +2,18 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import PropTypes from 'prop-types'
+import {useDispatch} from 'react-redux'
+import queryManager from '../redux_modules/query'
 
-function FavoriteButton({ setQueryData, moveScrolltoTop }) {
+function FavoriteButton({ moveScrolltoTop }) {
 
-    const queryString = {
-        favorite : true
-    }
+    const dispatch = useDispatch()
 
     const handleOnClick = () => {
-        setQueryData(queryString)
+        dispatch(queryManager.setQueryData({
+            favorite: true
+        }))
+        // setQueryData(queryString)
         moveScrolltoTop()
     }
 
@@ -20,7 +23,6 @@ function FavoriteButton({ setQueryData, moveScrolltoTop }) {
 }
 
 FavoriteButton.propTypes = {
-    setQueryData: PropTypes.func.isRequired,
     moveScrolltoTop: PropTypes.func.isRequired
 }
 

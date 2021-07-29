@@ -8,7 +8,7 @@ import CloseButton from './CloseButton'
 import Menu from './Menu'
 import Configuration from '../Configuration'
 
-function Header({ state, setState, setQueryData, deleteSelectedFolders, setSelectedFolderList, moveScrolltoTop}) {
+function Header({ state, setState, deleteSelectedFolders, setSelectedFolderList, moveScrolltoTop}) {
   const [menuState, setMenuState] = useState(false)
 
   return (
@@ -16,8 +16,8 @@ function Header({ state, setState, setQueryData, deleteSelectedFolders, setSelec
       {state === Configuration.STATE_NORMAL && (
         <>
           <MenuButton setMenuState={setMenuState} />
-          <Search setQueryData={setQueryData} moveScrolltoTop={moveScrolltoTop}/>
-          <FavoriteButton setQueryData={setQueryData} moveScrolltoTop={moveScrolltoTop}/>
+          <Search moveScrolltoTop={moveScrolltoTop}/>
+          <FavoriteButton moveScrolltoTop={moveScrolltoTop}/>
           <Menu menuState={menuState} setMenuState={setMenuState} setState={setState}/>
         </>
       )}
@@ -34,7 +34,6 @@ function Header({ state, setState, setQueryData, deleteSelectedFolders, setSelec
 Header.propTypes = {
   state: PropTypes.string.isRequired,
   setState: PropTypes.func.isRequired,
-  setQueryData: PropTypes.func.isRequired,
   deleteSelectedFolders: PropTypes.func.isRequired,
   setSelectedFolderList: PropTypes.func.isRequired,
   moveScrolltoTop: PropTypes.func.isRequired,
