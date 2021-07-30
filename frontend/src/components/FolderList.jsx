@@ -82,11 +82,7 @@ function cellRendererWrapper({
     }
 
     if (folderList[index] === undefined) {
-      return  (
-        <div style={style} key={key}>
-          <p>loading...</p>
-        </div>
-      )
+      return <div style={style} key={key} />
     }
 
     const folderData = folderList[index]

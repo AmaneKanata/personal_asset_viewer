@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -12,28 +12,66 @@ import Configuration from '../Configuration'
 import '../css/menu.scss'
 
 function Menu({ menuState, setMenuState }) {
-
   const dispatch = useDispatch()
+  const { scene } = useSelector(state => ({
+    scene: state.appState.scene
+  }))
 
   const onMenuClose = () => {
     setMenuState(false)
   }
 
-  const onButtonClicked = () => {
-    dispatch(setMode(Configuration.STATE_DELETING))
+  const folderListMenu = [ 'Delete', 'Upload']
+  const folderDetailMenu = ['Delete', 'Detail']
+
+  let menuContent
+
+  switch (scene) {
+    case Configuration.SCENE_FOLDER_LIST:
+      menuContent = folderListMenu
+      break;
+    case Configuration.SCENE_FOLDER_DETAIL:
+      menuContent=folderDetailMenu
+      break;
+    default:
+      break;
+  }
+
+  const onButtonClicked = (listItemName) => () => {
+    if(scene === Configuration.SCENE_FOLDER_LIST) {
+      switch (listItemName) {
+        case 'Delete':
+          dispatch(setMode(Configuration.STATE_DELETING))
+          break
+        case 'Upload':
+          console.log("upload")
+          break;
+        default:
+          break
+      }
+    } else if(scene === Configuration.SCENE_FOLDER_DETAIL) {
+      switch (listItemName) {
+        case 'Delete':
+          dispatch(setMode(Configuration.STATE_DELETING))
+          break
+        default:
+          break
+      }
+    }
+
     setMenuState(false)
   }
 
   const menuList = (
-    <div onClick={onButtonClicked}>
-      <List>
-        {['Delete'].map((listItemName) => (
-          <ListItem button key={ListItem}>
+    <List>
+      {menuContent.map((listItemName) => (
+        <div onClick={onButtonClicked(listItemName)}>
+          <ListItem button key={listItemName}>
             <ListItemText primary={listItemName} />
           </ListItem>
-        ))}
-      </List>
-    </div>
+        </div>
+      ))}
+    </List>
   )
 
   return (

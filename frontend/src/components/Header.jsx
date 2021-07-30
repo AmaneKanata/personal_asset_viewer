@@ -14,28 +14,38 @@ function Header() {
     appState: state.appState,
   }))
 
-  return (
-    <div className="header">
-      {appState.mode === Configuration.STATE_NORMAL &&
-      appState.scene === Configuration.SCENE_FOLDER_LIST ? (
+  let headerContent
+
+  if (appState.mode === Configuration.STATE_NORMAL) {
+    if (appState.scene === Configuration.SCENE_FOLDER_LIST) {
+      headerContent = (
         <>
           <MenuButton setMenuState={setMenuState} />
           <Search />
           <FavoriteButton />
           <Menu menuState={menuState} setMenuState={setMenuState} />
         </>
-      ) : (
+      )
+    } else if (appState.scene === Configuration.SCENE_FOLDER_DETAIL){
+      headerContent = (
         <>
           <MenuButton setMenuState={setMenuState} />
           <Menu menuState={menuState} setMenuState={setMenuState} />
         </>
-      )}
-      {appState.mode === Configuration.STATE_DELETING && (
-        <>
-          <DeleteButton />
-          <CloseButton />
-        </>
-      )}
+      )
+    }
+  } else {
+    headerContent = (
+      <>
+        <DeleteButton />
+        <CloseButton />
+      </>
+    )
+  }
+
+  return (
+    <div className="header">
+      {headerContent}
     </div>
   )
 }
