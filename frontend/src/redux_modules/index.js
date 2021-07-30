@@ -6,11 +6,11 @@ import selectedFolderList from './selectedFolderList'
 import selectedFileList from './selectedFileList'
 
 const rootReducer = combineReducers({
-  appState: appState.reduce,
-  folderList: folderList.reduce,
+  appState,
+  folderList,
   query: query.reduce,
-  selectedFolderList: selectedFolderList.reduce,
-  selectedFildList: selectedFileList.reduce,
+  selectedFolderList,
+  selectedFileList
 })
 
 export default rootReducer

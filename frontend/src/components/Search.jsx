@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import queryManger from '../redux_modules/query'
 
@@ -12,7 +11,7 @@ function makeQueryData(queryString) {
   }
 }
 
-function Search({ moveScrolltoTop }) {
+function Search() {
 
   const dispatch = useDispatch()
 
@@ -24,7 +23,7 @@ function Search({ moveScrolltoTop }) {
     event.preventDefault()
     const queryData = makeQueryData(queryString)
     dispatch(queryManger.setQueryData(queryData))
-    moveScrolltoTop()
+    window.scrollTo(0, 0)
     setQueryString('')
   }
 
@@ -44,10 +43,6 @@ function Search({ moveScrolltoTop }) {
       </form>
     </div>
   )
-}
-
-Search.propTypes = {
-  moveScrolltoTop: PropTypes.func.isRequired,
 }
 
 export default Search

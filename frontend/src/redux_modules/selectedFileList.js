@@ -7,40 +7,40 @@ const initialState = {
   selectedFileList: [],
 }
 
-export default {
-  reduce (state = initialState, action) {
-    switch (action.type) {
-      case SET_FILE_LIST:
-        return {
-          ...state,
-          selectedFileList: action.fileList,
-        }
-      case ADD_FILE:
-        return {
-          ...state,
-          selectedFileList: state.selectedFileList.concat(action.fileName),
-        }
-      case REMOVE_FILE:
-        return {
-          ...state,
-          selectedFileList: state.selectedFileList.filter(
-            (fileName) => fileName !== action.fileName
-          ),
-        }
-      default:
-        return state
-    }
-  },
-  setFileList: (fileList) => ({
-    type: SET_FILE_LIST,
-    fileList,
-  }),
-  addFile: (fileName) => ({
-    type: ADD_FILE,
-    fileName,
-  }),
-  removeile: (fileName) => ({
-    type: REMOVE_FILE,
-    fileName,
-  }),
+export const setSelectedFileList = (fileList) => ({
+  type: SET_FILE_LIST,
+  fileList,
+})
+
+export const addFile = (fileIndex) => ({
+  type: ADD_FILE,
+  fileIndex,
+})
+export const removeFile = (fileIndex) => ({
+  type: REMOVE_FILE,
+  fileIndex,
+})
+
+export default function reduce(state = initialState, action) {
+  switch (action.type) {
+    case SET_FILE_LIST:
+      return {
+        ...state,
+        selectedFileList: action.fileList,
+      }
+    case ADD_FILE:
+      return {
+        ...state,
+        selectedFileList: state.selectedFileList.concat(action.fileIndex),
+      }
+    case REMOVE_FILE:
+      return {
+        ...state,
+        selectedFileList: state.selectedFileList.filter(
+          (fileIndex) => fileIndex !== action.fileIndex
+        ),
+      }
+    default:
+      return state
+  }
 }

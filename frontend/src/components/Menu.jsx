@@ -2,21 +2,25 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
 import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import { setMode } from '../redux_modules/appState'
 import Configuration from '../Configuration'
 import '../css/menu.scss'
 
-function Menu({ menuState, setMenuState, setState }) {
+function Menu({ menuState, setMenuState }) {
+
+  const dispatch = useDispatch()
 
   const onMenuClose = () => {
     setMenuState(false)
   }
 
-  const onButtonClicked = (event) => {
-    setState(Configuration.STATE_DELETING)
+  const onButtonClicked = () => {
+    dispatch(setMode(Configuration.STATE_DELETING))
     setMenuState(false)
   }
 
@@ -42,7 +46,6 @@ function Menu({ menuState, setMenuState, setState }) {
 Menu.propTypes = {
   menuState: PropTypes.bool.isRequired,
   setMenuState: PropTypes.func.isRequired,
-  setState: PropTypes.func.isRequired
 }
 
 export default Menu

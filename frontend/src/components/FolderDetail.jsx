@@ -1,35 +1,22 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
 import FolderItems from './FolderItems'
+import { setScene, setFolder } from '../redux_modules/appState'
+import Configuration from '../Configuration'
 
-function FolderDetail({
-  match,
-  state,
-  selectedFileList,
-  addSelectedFile,
-  removeSelectedFile,
-}) {
-  const [folderDetail, setFolderDetail] = useState({
-    items: [],
-  })
+function FolderDetail({ match }) {
+  const dispatch = useDispatch()
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    axios.get(`http://localhost:3000/${match.params.id}/detail`).then((res) => {
-      setFolderDetail(res.data[0])
-    })
+    dispatch(setScene(Configuration.SCENE_FOLDER_DETAIL))
+    dispatch(setFolder(match.params.id))
   }, [])
 
   return (
     <div>
-      <FolderItems
-        data={{ id: folderDetail._id }}
-        state={state}
-        selectedFileList={selectedFileList}
-        addSelectedFile={addSelectedFile}
-        removeSelectedFile={removeSelectedFile}
-      />
+      <FolderItems />
     </div>
   )
 }
@@ -40,10 +27,6 @@ FolderDetail.propTypes = {
       id: PropTypes.string,
     }),
   }).isRequired,
-  state: PropTypes.string.isRequired,
-  selectedFileList: PropTypes.arrayOf(PropTypes.number).isRequired,
-  addSelectedFile: PropTypes.func.isRequired,
-  removeSelectedFile: PropTypes.func.isRequired,
 }
 
 export default FolderDetail

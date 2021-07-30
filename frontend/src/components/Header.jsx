@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 import Search from './Search'
 import FavoriteButton from './FavoriteButton'
 import DeleteButton from './DeleteButton'
@@ -8,35 +8,36 @@ import CloseButton from './CloseButton'
 import Menu from './Menu'
 import Configuration from '../Configuration'
 
-function Header({ state, setState, deleteSelectedFolders, setSelectedFolderList, moveScrolltoTop}) {
+function Header() {
   const [menuState, setMenuState] = useState(false)
+  const { appState } = useSelector((state) => ({
+    appState: state.appState,
+  }))
 
   return (
     <div className="header">
-      {state === Configuration.STATE_NORMAL && (
+      {appState.mode === Configuration.STATE_NORMAL &&
+      appState.scene === Configuration.SCENE_FOLDER_LIST ? (
         <>
           <MenuButton setMenuState={setMenuState} />
-          <Search moveScrolltoTop={moveScrolltoTop}/>
-          <FavoriteButton moveScrolltoTop={moveScrolltoTop}/>
-          <Menu menuState={menuState} setMenuState={setMenuState} setState={setState}/>
+          <Search />
+          <FavoriteButton />
+          <Menu menuState={menuState} setMenuState={setMenuState} />
+        </>
+      ) : (
+        <>
+          <MenuButton setMenuState={setMenuState} />
+          <Menu menuState={menuState} setMenuState={setMenuState} />
         </>
       )}
-      {state === Configuration.STATE_DELETING && (
+      {appState.mode === Configuration.STATE_DELETING && (
         <>
-          <DeleteButton deleteSelectedFolders={deleteSelectedFolders} />
-          <CloseButton setState={setState} setSelectedFolderList={setSelectedFolderList}/>
+          <DeleteButton />
+          <CloseButton />
         </>
       )}
     </div>
   )
-}
-
-Header.propTypes = {
-  state: PropTypes.string.isRequired,
-  setState: PropTypes.func.isRequired,
-  deleteSelectedFolders: PropTypes.func.isRequired,
-  setSelectedFolderList: PropTypes.func.isRequired,
-  moveScrolltoTop: PropTypes.func.isRequired,
 }
 
 export default Header

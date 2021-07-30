@@ -9,7 +9,9 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 import Configuration from '../Configuration'
 import '../css/folderList.scss'
-import folderListManager from '../redux_modules/folderList'
+import { loadFolderList } from '../redux_modules/folderList'
+import { addFolder, removeFolder } from '../redux_modules/selectedFolderList'
+import { setFolder, setScene } from '../redux_modules/appState'
 
 const windowWidth = Configuration.getWindowWidth()
 
@@ -33,14 +35,16 @@ FolderThumbnail.propTypes = {
   name: PropTypes.string.isRequired,
 }
 
-function FavoriteButton({ state, id, getFolderList }) {
+function FavoriteButton({ state, id }) {
+  const dispatch = useDispatch()
+
   const onFavoriteButtonClicked = () => {
     axios
       .patch(`http://localhost:3000/${id}/favorite`, {
         target: !state,
       })
       .then(() => {
-        getFolderList()
+        dispatch(loadFolderList())
       })
   }
 
@@ -57,17 +61,16 @@ function FavoriteButton({ state, id, getFolderList }) {
 FavoriteButton.propTypes = {
   state: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
-  getFolderList: PropTypes.func.isRequired,
 }
 
 function cellRendererWrapper({
-  state,
+  dispatch,
+  appState,
   folderList,
-  addSelectedFolder,
-  removeSelectedFolder,
   selectedFolderList,
 }) {
   return function cellRenderer({ columnIndex, rowIndex, style, key }) {
+    const state = appState.mode
     const index = columnIndex + rowIndex * 2
 
     if (folderList === undefined) {
@@ -77,17 +80,25 @@ function cellRendererWrapper({
         </div>
       )
     }
+
     if (folderList[index] === undefined) {
-      return <div style={style} key={key} />
+      return  (
+        <div style={style} key={key}>
+          <p>loading...</p>
+        </div>
+      )
     }
+
     const folderData = folderList[index]
+
     const selectFolder = () => {
       if (selectedFolderList.includes(folderData._id)) {
-        removeSelectedFolder(folderData._id)
+        dispatch(removeFolder(folderData._id))
       } else {
-        addSelectedFolder(folderData._id)
+        dispatch(addFolder(folderData._id))
       }
     }
+
     return (
       <div style={style} key={key}>
         <figure
@@ -125,23 +136,21 @@ function cellRendererWrapper({
   }
 }
 
-function FolderList(props) {
+function FolderList() {
   const dispatch = useDispatch()
-  const { queryData, folderList } = useSelector((state) => {
-
-    console.log(state)
-    return {
-      queryData: state.query.queryData,
-      folderList: state.folderList.folderList
-    }
-  })
+  const { queryData, folderList, appState, selectedFolderList } = useSelector(
+    (state) => ({
+        queryData: state.query.queryData,
+        folderList: state.folderList.folderList,
+        appState: state.appState,
+        selectedFolderList: state.selectedFolderList.selectedFolderList,
+      })
+  )
 
   useEffect(() => {
-    if(queryData === undefined) {
-      return
-    }
-    console.log(queryData)
-    dispatch(folderListManager.loadFolderList(queryData))
+    dispatch(setFolder(undefined))
+    dispatch(setScene(Configuration.SCENE_FOLDER_LIST))
+    dispatch(loadFolderList(queryData))
   }, [queryData])
 
   return (
@@ -162,24 +171,16 @@ function FolderList(props) {
             scrollTop={scrollTop}
             onScroll={() => {}}
             cellRenderer={cellRendererWrapper({
-              state: props.state,
+              dispatch,
+              appState,
               folderList,
-              addSelectedFolder: props.addSelectedFolder,
-              removeSelectedFolder: props.removeSelectedFolder,
-              selectedFolderList: props.selectedFolderList,
+              selectedFolderList,
             })}
           />
         </div>
       )}
     </WindowScroller>
   )
-}
-
-FolderList.propTypes = {
-  state: PropTypes.string.isRequired,
-  addSelectedFolder: PropTypes.func.isRequired,
-  removeSelectedFolder: PropTypes.func.isRequired,
-  selectedFolderList: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default FolderList

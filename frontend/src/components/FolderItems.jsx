@@ -1,18 +1,21 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import axios from 'axios'
-import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { addFile, removeFile } from '../redux_modules/selectedFileList'
 import Configuration from '../Configuration'
 import '../css/thumbnailList.scss'
 
-function FolderItems({
-  data: { id },
-  state,
-  selectedFileList,
-  addSelectedFile,
-  removeSelectedFile,
-}) {
+function FolderItems() {
+
+  const dispatch = useDispatch()
+  const { id, mode, selectedFileList } = useSelector(state => ({
+    id: state.appState.data.folderId,
+    mode: state.appState.mode,
+    selectedFileList: state.selectedFileList.selectedFileList
+  }))
+
   const [items, setItems] = useState([])
 
   const loadItems = () => {
@@ -27,14 +30,14 @@ function FolderItems({
       return
     }
     loadItems()
-  }, [id, state])
+  }, [id, mode])
 
   const selectFile = (index) => (
     () => {
       if(selectedFileList.includes(index)) {
-        removeSelectedFile(index)
+        dispatch(removeFile(index))
       } else {
-        addSelectedFile(index)
+        dispatch(addFile(index))
       }
     }
   )
@@ -44,15 +47,15 @@ function FolderItems({
       {items.map((item, index) => (
         <div className="item-thumbnail" key={item}
         onClick = {
-          state === Configuration.STATE_DELETING ? selectFile(index) : undefined
+          mode === Configuration.STATE_DELETING ? selectFile(index) : undefined
         }
         >
           {
-            state === Configuration.STATE_DELETING &&
+            mode === Configuration.STATE_DELETING &&
             selectedFileList.includes(index) &&
             <img src="./checked.png" alt="" id="checkedMark" className="checked" />
           }
-          {state === Configuration.STATE_NORMAL ? (
+          {mode === Configuration.STATE_NORMAL ? (
             <Link
               to={{
                 pathname: `/${id}/item`,
@@ -79,16 +82,6 @@ function FolderItems({
       ))}
     </div>
   )
-}
-
-FolderItems.propTypes = {
-  data: PropTypes.shape({
-    id: PropTypes.string,
-  }).isRequired,
-  state: PropTypes.string.isRequired,
-  selectedFileList: PropTypes.arrayOf(PropTypes.number).isRequired,
-  addSelectedFile: PropTypes.func.isRequired,
-  removeSelectedFile: PropTypes.func.isRequired,
 }
 
 export default FolderItems
