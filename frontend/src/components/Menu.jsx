@@ -11,17 +11,18 @@ import { setMode } from '../redux_modules/appState'
 import Configuration from '../Configuration'
 import '../css/menu.scss'
 
-function Menu({ menuState, setMenuState }) {
+function Menu({ menuState, setMenuState}) {
+
   const dispatch = useDispatch()
-  const { scene } = useSelector(state => ({
-    scene: state.appState.scene
+  const { scene } = useSelector((state) => ({
+    scene: state.appState.scene,
   }))
 
   const onMenuClose = () => {
     setMenuState(false)
   }
 
-  const folderListMenu = [ 'Delete', 'Upload']
+  const folderListMenu = ['Delete', 'Upload']
   const folderDetailMenu = ['Delete', 'Detail']
 
   let menuContent
@@ -29,27 +30,27 @@ function Menu({ menuState, setMenuState }) {
   switch (scene) {
     case Configuration.SCENE_FOLDER_LIST:
       menuContent = folderListMenu
-      break;
+      break
     case Configuration.SCENE_FOLDER_DETAIL:
-      menuContent=folderDetailMenu
-      break;
+      menuContent = folderDetailMenu
+      break
     default:
-      break;
+      break
   }
 
   const onButtonClicked = (listItemName) => () => {
-    if(scene === Configuration.SCENE_FOLDER_LIST) {
+    if (scene === Configuration.SCENE_FOLDER_LIST) {
       switch (listItemName) {
         case 'Delete':
           dispatch(setMode(Configuration.STATE_DELETING))
           break
         case 'Upload':
           console.log("upload")
-          break;
+          break
         default:
           break
       }
-    } else if(scene === Configuration.SCENE_FOLDER_DETAIL) {
+    } else if (scene === Configuration.SCENE_FOLDER_DETAIL) {
       switch (listItemName) {
         case 'Delete':
           dispatch(setMode(Configuration.STATE_DELETING))
@@ -65,11 +66,13 @@ function Menu({ menuState, setMenuState }) {
   const menuList = (
     <List>
       {menuContent.map((listItemName) => (
-        <div onClick={onButtonClicked(listItemName)}>
-          <ListItem button key={listItemName}>
-            <ListItemText primary={listItemName} />
-          </ListItem>
-        </div>
+        <ListItem
+          button
+          onClick={onButtonClicked(listItemName)}
+          key={listItemName}
+        >
+          <ListItemText primary={listItemName} />
+        </ListItem>
       ))}
     </List>
   )

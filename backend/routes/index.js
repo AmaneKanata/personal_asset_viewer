@@ -1,6 +1,6 @@
 const express = require('express')
-// const btoa = require('btoa')
 const mongoose = require('mongoose')
+const multer = require('multer')
 const configuration = require('../configuration')
 const folderSchema = require('../schemas/folderSchema')
 
@@ -9,6 +9,20 @@ const Folder = mongoose.model('Folder', folderSchema)
 const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'MongoDB connection error'))
+
+const multerSettings = multer.diskStorage({
+  destination(req, file, callback) {
+    callback(null, configuration.UPLOAD_DESTINATION)
+  },
+  filename(req, file, callback){
+    callback(null, `${file.originalname}`)
+  }
+})
+const upload = multer({storage: multerSettings})
+
+router.post('/post', upload.single('test'), (req, res) => {
+  res.send(req.file)
+})
 
 router.get('/list', async (req, res) => {
   let queryObject = Folder.find({}, 'name favorite')
