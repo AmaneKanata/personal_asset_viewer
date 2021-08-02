@@ -10,6 +10,7 @@ const Configuration = {
     },
     STATE_NORMAL: "normal",
     STATE_DELETING: "deleting",
+    STATE_UPLOADING: "uploading",
     SCENE_FOLDER_LIST: "folderList",
     SCENE_FOLDER_DETAIL: "folderDetail",
     SCENE_ITEM: "item"

@@ -7,19 +7,25 @@ import FolderList from './components/FolderList'
 import FolderDetail from './components/FolderDetail'
 import Item from './components/Item'
 import Header from './components/Header'
-import UploadTest from './components/UploadTest'
+import Upload from './components/Upload'
 import Configuration from './Configuration'
 
 function App() {
-  const { scene } = useSelector((state) => ({
+  const { scene, mode } = useSelector((state) => ({
     scene: state.appState.scene,
+    mode: state.appState.mode
   }))
 
   return (
     <div className="App">
       {scene !== Configuration.SCENE_ITEM && <Header />}
-      <Route path="/" component={FolderList} exact />
-      {/* <Route path="/upload" component={UploadTest} exact /> */}
+      <Route path="/" exact>
+        {
+          mode === Configuration.STATE_NORMAL 
+          ? <FolderList />
+          : <Upload />
+        }
+      </Route>
       <Route path="/:id" component={FolderDetail} exact />
       <Route path="/:id/item" component={Item} exact />
     </div>

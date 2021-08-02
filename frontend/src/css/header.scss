@@ -39,6 +39,16 @@
     filter: invert(100%);
   }
 
+  .upload_button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 80vw;
+    height: 7vw;
+    width: 7vw;
+    filter: invert(100%);
+  }
+
   .close_button {
     position: absolute;
     top: 50%;

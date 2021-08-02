@@ -5,7 +5,7 @@ const configuration = require('../configuration')
 const folderSchema = require('../schemas/folderSchema')
 
 const router = express.Router()
-const Folder = mongoose.model('Folder', folderSchema)
+const Folder = mongoose.model('Manga', folderSchema)
 const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'MongoDB connection error'))

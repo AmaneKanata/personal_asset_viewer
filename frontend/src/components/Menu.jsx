@@ -45,7 +45,7 @@ function Menu({ menuState, setMenuState}) {
           dispatch(setMode(Configuration.STATE_DELETING))
           break
         case 'Upload':
-          console.log("upload")
+          dispatch(setMode(Configuration.STATE_UPLOADING))
           break
         default:
           break

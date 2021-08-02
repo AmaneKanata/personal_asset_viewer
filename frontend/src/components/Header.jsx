@@ -7,6 +7,7 @@ import MenuButton from './MenuButton'
 import CloseButton from './CloseButton'
 import Menu from './Menu'
 import Configuration from '../Configuration'
+import UploadButton from './UploadButton'
 
 function Header() {
   const [menuState, setMenuState] = useState(false)
@@ -26,7 +27,7 @@ function Header() {
           <Menu menuState={menuState} setMenuState={setMenuState} />
         </>
       )
-    } else if (appState.scene === Configuration.SCENE_FOLDER_DETAIL){
+    } else if (appState.scene === Configuration.SCENE_FOLDER_DETAIL) {
       headerContent = (
         <>
           <MenuButton setMenuState={setMenuState} />
@@ -34,20 +35,23 @@ function Header() {
         </>
       )
     }
-  } else {
+  } else if (appState.mode === Configuration.STATE_DELETING) {
     headerContent = (
       <>
         <DeleteButton />
         <CloseButton />
       </>
     )
+  } else if (appState.mode === Configuration.STATE_UPLOADING) {
+    headerContent = (
+      <>
+        <UploadButton />
+        <CloseButton />
+      </>
+    )
   }
 
-  return (
-    <div className="header">
-      {headerContent}
-    </div>
-  )
+  return <div className="header">{headerContent}</div>
 }
 
 export default Header

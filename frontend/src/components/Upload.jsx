@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import axios from 'axios'
 import React, { useState } from 'react'
+import '../css/upload.scss'
 
 function UploadTest() {
   const [file, setFile] = useState(null)
@@ -18,10 +20,16 @@ function UploadTest() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input type="file" name="test" onChange={handleOnChange} />
-        <button type="submit">upload</button>
-      </form>
+      <label htmlFor='file_input' className="file_input_label">
+        test!
+      </label>
+      <input
+        type="file"
+        name="test"
+        onChange={handleOnChange}
+        className="file_input"
+        id='file_input'
+      />
     </div>
   )
 }

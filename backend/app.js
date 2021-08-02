@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const indexRouter = require('./routes/index');
 
 
-const mongoDB = 'mongodb://localhost:27017/personal_asset_viewer'
+const mongoDB = 'mongodb://localhost:27017/data'
 mongoose.connect(mongoDB, {
   useNewUrlParser :  true,
   useUnifiedTopology : true
