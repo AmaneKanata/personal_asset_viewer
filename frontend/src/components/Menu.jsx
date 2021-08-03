@@ -7,7 +7,7 @@ import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import { setMode } from '../redux_modules/appState'
+import { setMode, setScene } from '../redux_modules/appState'
 import Configuration from '../Configuration'
 import '../css/menu.scss'
 
@@ -45,6 +45,7 @@ function Menu({ menuState, setMenuState}) {
           dispatch(setMode(Configuration.STATE_DELETING))
           break
         case 'Upload':
+          dispatch(setScene(Configuration.SCENE_UPLOADING))
           dispatch(setMode(Configuration.STATE_UPLOADING))
           break
         default:

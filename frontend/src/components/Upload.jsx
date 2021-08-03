@@ -1,36 +1,60 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import axios from 'axios'
-import React, { useState } from 'react'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 import '../css/upload.scss'
+import { addUploadedFile, removeUploadedFile } from '../redux_modules/loadedFileList'
 
-function UploadTest() {
-  const [file, setFile] = useState(null)
+function UploadedFile({ dispatch, file }) {
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const formData = new FormData()
-    formData.append('test', file)
-    // setFile(null)
-    axios.post('http://localhost:3000/testpost', formData)
-  }
-
-  const handleOnChange = ({ target: { files } }) => {
-    setFile(files[0])
+  const handleOnClick = () => {
+    dispatch(removeUploadedFile(file.name))
   }
 
   return (
     <div>
-      <label htmlFor='file_input' className="file_input_label">
-        test!
+      {file.name}
+      <button type="button" onClick={handleOnClick}>delete</button>
+    </div>
+  )
+}
+
+UploadedFile.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  file: PropTypes.shape({
+    name: PropTypes.string,
+  }).isRequired,
+}
+
+function UploadTest() {
+  const dispatch = useDispatch()
+  const { uploadedFile } = useSelector((state) => ({
+    uploadedFile: state.loadedFileList.loadedFile,
+  }))
+
+  const handleOnChange = ({ target: { files } }) => {
+    dispatch(addUploadedFile(files[0]))
+  }
+
+  return (
+    <>
+      <label htmlFor="file_input" className="file_input_label">
+        <img src="./plus.png" alt="" />
+        <label>add File</label>
       </label>
       <input
         type="file"
         name="test"
         onChange={handleOnChange}
         className="file_input"
-        id='file_input'
+        id="file_input"
       />
-    </div>
+      {uploadedFile.map((file) => (
+        <div key={file.name}>
+          <UploadedFile file={file} dispatch={dispatch} />
+        </div>
+      ))}
+    </>
   )
 }
 

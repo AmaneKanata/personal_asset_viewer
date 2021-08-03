@@ -6,6 +6,7 @@ import { setMode } from '../redux_modules/appState'
 import { setSelectedFolderList } from '../redux_modules/selectedFolderList'
 import { setSelectedFileList } from '../redux_modules/selectedFileList'
 import Configuration from '../Configuration'
+import { setUploadedFile } from '../redux_modules/loadedFileList'
 
 function CloseButton() {
 
@@ -15,12 +16,14 @@ function CloseButton() {
   }))
 
   const handleOnClick = () => {
-    dispatch(setMode(Configuration.STATE_NORMAL))
     if(scene === Configuration.SCENE_FOLDER_LIST) {
       dispatch(setSelectedFolderList([]))
     } else if(scene === Configuration.SCENE_FOLDER_DETAIL) {
       dispatch(setSelectedFileList([]))
+    } else if(scene === Configuration.SCENE_UPLOADING) {
+      dispatch(setUploadedFile([]))
     }
+    dispatch(setMode(Configuration.STATE_NORMAL))
   }
 
   return (

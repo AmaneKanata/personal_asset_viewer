@@ -5,7 +5,7 @@ const configuration = require('../configuration')
 const folderSchema = require('../schemas/folderSchema')
 
 const router = express.Router()
-const Folder = mongoose.model('Manga', folderSchema)
+const Folder = mongoose.model('Folder', folderSchema)
 const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'MongoDB connection error'))
@@ -20,8 +20,13 @@ const multerSettings = multer.diskStorage({
 })
 const upload = multer({storage: multerSettings})
 
-router.post('/post', upload.single('test'), (req, res) => {
-  res.send(req.file)
+// router.post('/post', upload.single('fileList'), (req, res) => {
+//   console.log(req)
+//   res.send(req.file)
+// })
+router.post('/post', upload.array('fileList'), (req, res) => {
+  console.log(req.files)
+  res.send(req.files)
 })
 
 router.get('/list', async (req, res) => {

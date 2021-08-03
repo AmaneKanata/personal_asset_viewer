@@ -13,6 +13,7 @@ const Configuration = {
     STATE_UPLOADING: "uploading",
     SCENE_FOLDER_LIST: "folderList",
     SCENE_FOLDER_DETAIL: "folderDetail",
+    SCENE_UPLOADING: "uploading",
     SCENE_ITEM: "item"
 }
 

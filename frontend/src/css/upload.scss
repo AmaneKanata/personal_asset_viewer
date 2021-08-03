@@ -1,11 +1,18 @@
 input {
-    &.file_input {
-        display: none;
-    }
+  &.file_input {
+    display: none;
+  }
 }
 
-label {
-    &.file_input_lable {
-        
-    }
+.file_input_label {
+  img {
+    width: 5vw;
+    height: 5vw;
+    filter: invert(100%);
+  }
+
+  label {
+    font-size: 5vw;
+    color: white;
+  }
 }
