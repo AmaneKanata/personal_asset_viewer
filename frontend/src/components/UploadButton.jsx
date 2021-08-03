@@ -16,7 +16,9 @@ function UploadButton() {
     uploadedFile.forEach((file) => {
       formData.append('fileList', file)
     })
-    axios.post('http://localhost:3000/post', formData).then(() => {
+    // formData.enctype='multipart/form-data';
+    axios.post('http://localhost:3000/post', formData).then((res) => {
+      console.log(res)
       dispatch(setUploadedFile([]))
     })
   }

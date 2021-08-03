@@ -10,22 +10,28 @@ const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'MongoDB connection error'))
 
-const multerSettings = multer.diskStorage({
+const storageSettings = multer.diskStorage({
   destination(req, file, callback) {
     callback(null, configuration.UPLOAD_DESTINATION)
   },
-  filename(req, file, callback){
+  filename(req, file, callback) {
     callback(null, `${file.originalname}`)
-  }
+  },
 })
-const upload = multer({storage: multerSettings})
+const fileFilterSettings = (req, file, callback) => {
+  if(file.mimetype === 'application/x-zip-compressed') {
+    callback(null, true)
+  } else {
+    callback(null, false)
+  }
+}
+const upload = multer({
+  storage: storageSettings,
+  fileFilter: fileFilterSettings,
+})
 
-// router.post('/post', upload.single('fileList'), (req, res) => {
-//   console.log(req)
-//   res.send(req.file)
-// })
 router.post('/post', upload.array('fileList'), (req, res) => {
-  console.log(req.files)
+  // console.log(req.files)
   res.send(req.files)
 })
 
@@ -86,15 +92,15 @@ router.get('/:id/detail', (req, res) => {
 
 router.get('/:id/thumbnail', (req, res) => {
   Folder.find({ _id: req.params.id }, 'name items', (err, queryResult) => {
-    if(req.query.name) {
+    if (req.query.name) {
       res.sendFile(
         (queryResult[0].items.includes(req.query.name) &&
           `${configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name}\\${
             req.query.name
           }`) ||
-          `${configuration.THUMBNAIL_URL_PREFIX}\\NoThumbnail.jpg` 
+          `${configuration.THUMBNAIL_URL_PREFIX}\\NoThumbnail.jpg`
       )
-    } else if(req.query.index) {
+    } else if (req.query.index) {
       res.sendFile(
         (queryResult[0].items[req.query.index] &&
           `${configuration.THUMBNAIL_URL_PREFIX + queryResult[0].name}\\${
